@@ -1,0 +1,20 @@
+import matplotlib.pyplot as plt
+from pandas import DataFrame
+from sklearn import linear_model
+
+"""
+array format: [avg, HR, RBI, WAR]
+choose 2018 statistics of All-Stars and reg. players
+    to compute whether a given player is an All-Star
+players chosen: 
+    Mike Trout, Mookie Betts, Buster Posey, Kyle Seager, 
+    Mike Moustakas, Scooter Gennett, Salvador Perez, Andrew McCutchen
+"""
+
+players = {'Average': [.312, .346, .284, .221, .251, .310, .235, .255],
+           'HR': [39, 32, 5, 22, 28, 23, 27, 20],
+           'RBI': [79, 80, 41, 78, 95, 92, 80, 65],
+           'WAR': [10.2, 10.9, 2.9, 0.8, 2.5, 4.2, 2.4, 2.7]}
+
+df = DataFrame(players, columns=['Average', 'HR', 'RBI', 'WAR'])
+print(df)
