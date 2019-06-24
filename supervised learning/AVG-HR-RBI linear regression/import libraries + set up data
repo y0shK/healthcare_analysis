@@ -4,8 +4,10 @@ from sklearn import linear_model
 
 """
 array format: [avg, HR, RBI, WAR]
+    x = avg, HR, RBI
+    y = WAR
 choose 2018 statistics of All-Stars and reg. players
-    to compute whether a given player is an All-Star
+    to compute how the effect of Triple Crown stats contribute to WAR
 players chosen: 
     Mike Trout, Mookie Betts, Buster Posey, Kyle Seager, 
     Mike Moustakas, Scooter Gennett, Salvador Perez, Andrew McCutchen
