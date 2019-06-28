@@ -1,0 +1,111 @@
+physBulk = []
+physSpd = []
+spBulk = []
+spSpd = []
+tank = []
+sweepers = [physBulk, physSpd, spBulk, spSpd]
+
+# define stealth rockers based on competitive viability (e.g. ubers, OU/UU), w/o Eviolite
+stealthRock = ['Golem', 'Steelix', 'Gigalith', 'Crustle', 'Sandslash',
+               'Nidoqueen', 'Nidoking', 'Clefairy', 'Clefable', 'Wigglytuff',
+               'Marowak', 'Dugtrio', 'Chansey', 'Pinsir',
+               'PinsirMega Pinsir', 'Omastar', 'Kabutops', 'Aerodactyl', 'Mew',
+               'Sudowoodo', 'Forretress', 'Corsola', 'Skarmory', 'Donphan',
+               'Blissey', 'Miltank', 'Tyranitar', 'Celebi', 'Swampert', 'SwampertMega Swampert',
+               'Aggron', 'Camerupt', 'Lunatone', 'Armaldo', 'Kecleon', 'Relicanth',
+               'Metagross', 'Regirock', 'Registeel', 'Groudon', 'GroudonMega Groudon',
+               'Jirachi', 'Deoxys', 'Torterra', 'Infernape', 'Empoleon', 'Bibarel',
+               'Rampardos', 'Bastiodon', 'Bronzong', 'Garchomp', 'Rhyperior',
+               'Hippowdon', 'Gliscor', 'Mamoswine', 'Probopass', 'Uxie', 'Mesperit',
+               'Azelf', 'Dialga', 'Heatran', 'Arceus', 'Excadrill', 'Seismitoad',
+               'Krookodile', 'Carracosta', 'Archeops', 'Ferrothorn', 'Stunfisk',
+               'Druddigon', 'Bisharp', 'Cobalion', 'Terrakion', 'Landorus']
+
+def checkSweepers(directory):
+    # row 5 is HP, 6 is atk, 10 is spd
+    with open(directory, newline="") as file:
+        reader = csv.reader(file)
+        next(file) # skip intro line
+        for row in reader:
+            if int(row[5]) >= 100 and int(row[6]) >= 100:
+                physBulk.append(row[1])
+            if int(row[10]) >= 100 and int(row[6]) >= 100:
+                physSpd.append(row[1])
+            if int(row[5]) >= 100 and int(row[7]) >= 100:
+                spBulk.append(row[1])
+            if int(row[10]) >= 100 and int(row[7]) >= 100:
+                spSpd.append((row[1]))
+            if int(row[7]) >= 105 and int(row[9]) >= 105:
+                tank.append(row[1])
+        #for i in range(len(sweepers)+1):
+           # if sorted(spBulk[i]) == sorted(spBulk[i+1]):
+              #  spBulk.pop(spBulk[i+1])
+            #if sorted(spSpd[i]) == sorted(spSpd[i+1]):
+               # spSpd.pop(spSpd[i+1])
+checkSweepers(csvDirectory)
+print(physBulk)
+print(physSpd)
+print(spBulk)
+print(spSpd)
+print(tank)
+
+# choose 6 random Pokemon
+# one of each category + stealth rocker, no duplicates
+# implement restrictions; no 2 megas, etc.
+
+def addToTeam(teamNiche, teamArray):
+    teamArray.append(teamNiche[(random.randrange(0, len(teamNiche)))])
+
+team = []
+categories = [physBulk, physSpd, spBulk, spSpd, tank, stealthRock]
+
+for pokemon in categories:
+    addToTeam(pokemon, team)
+
+def verifyTeam(team):
+    unique = True
+    megaCount = 0
+    megaCountGood = True
+
+    for i in range(0, len(team)):
+        if 0 < i < 5 and team[i] == team[i+1]:
+            unique = False
+            if team[i] in team[i+1]: # check to make sure one Pokemon isn't a Mega and another pokemon isn't a regular form of the same Mega
+                unique = False
+        elif i == 5 and team[5] == team[0]:
+            unique = False
+            if team[5] in team[0]:
+                unique = False
+        if "Mega" in team[i]:
+            megaCount += 1
+    if megaCount > 1:
+        megaCountGood = False
+    print(unique)
+    if unique and megaCountGood:
+        print(team)
+    else: # team is not valid; regenerate team
+        team = []
+        for pokemonName in categories:
+            addToTeam(pokemonName, team)
+        unique = True
+        megaCount = 0
+        megaCountGood = True
+
+        for i in range(0, len(team)):
+            if 0 < i < 5 and team[i] == team[i + 1]:
+                unique = False
+                if team[i] in team[i + 1]:  # check to make sure one Pokemon isn't a Mega and another pokemon isn't a regular form of the same Mega
+                    unique = False
+            elif i == 5 and team[5] == team[0]:
+                unique = False
+                if team[5] in team[0]:
+                    unique = False
+            if "Mega" in team[i]:
+                megaCount += 1
+        if megaCount > 1:
+            megaCountGood = False
+        print(unique)
+        if unique and megaCountGood:
+            print(team)
+
+verifyTeam(team)
