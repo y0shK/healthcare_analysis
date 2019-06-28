@@ -37,11 +37,7 @@ def checkSweepers(directory):
                 spSpd.append((row[1]))
             if int(row[7]) >= 105 and int(row[9]) >= 105:
                 tank.append(row[1])
-        #for i in range(len(sweepers)+1):
-           # if sorted(spBulk[i]) == sorted(spBulk[i+1]):
-              #  spBulk.pop(spBulk[i+1])
-            #if sorted(spSpd[i]) == sorted(spSpd[i+1]):
-               # spSpd.pop(spSpd[i+1])
+
 checkSweepers(csvDirectory)
 print(physBulk)
 print(physSpd)
@@ -50,8 +46,8 @@ print(spSpd)
 print(tank)
 
 # choose 6 random Pokemon
-# one of each category + stealth rocker, no duplicates
-# implement restrictions; no 2 megas, etc.
+# one of each category of teammate + stealth rocker
+# implement restrictions; no duplicates, <= 1 mega Pokemon
 
 def addToTeam(teamNiche, teamArray):
     teamArray.append(teamNiche[(random.randrange(0, len(teamNiche)))])
