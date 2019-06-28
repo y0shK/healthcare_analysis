@@ -1,0 +1,35 @@
+def checkMonotype(directory):
+    with open(directory, newline="") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if not row[3]:
+                monotype = True
+            else:
+                monotype = False
+            print("%s monotype: %s" % (row[1], monotype))
+            print(row)
+
+physBulk = []
+physSpd = []
+spBulk = []
+spSpd = []
+tank = []
+
+def checkSweepers(directory):
+    # row 5 is HP, 6 is atk, 7 is specialAtk, 10 is spd
+    with open(directory, newline="") as file:
+        reader = csv.reader(file)
+        next(file) # skip introductory line explaining stats
+        for row in reader:
+            if int(row[5]) >= 100 and int(row[6]) >= 100:
+                physBulk.append(row[1])
+            if int(row[10]) >= 100 and int(row[6]) >= 100:
+                physSpd.append(row[1])
+            if int(row[5]) >= 100 and int(row[7]) >= 100:
+                spBulk.append(row[1])
+            if int(row[10]) >= 100 and int(row[7]) >= 100:
+                spSpd.append((row[1]))
+            if int(row[7]) >= 105 and int(row[9]) >= 105:
+                tank.append(row[1])
+                
+checkMonotype(csvDirectory)
