@@ -7,6 +7,7 @@ from matplotlib import cm # warm-color color map for pokemon 3D graph
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 """
 -Pokemon CSV array data: https://www.kaggle.com/abcsds/pokemon
@@ -17,6 +18,8 @@ generation, boolean isLegendary]
 
 -https://stackoverflow.com/questions/9573244/how-to-check-if-the-string-is-empty
 -https://stackoverflow.com/questions/52050346/passing-csv-files-as-arguments-to-a-function
+-https://stackoverflow.com/questions/37711538/matplotlib-3d-axes-ticks-labels-and-latex
+-https://en.wikipedia.org/wiki/Gradient_descent#Python
 """
 
 csvDirectory = '/home/yash/Downloads/pokemon.csv/Pokemon.csv'
