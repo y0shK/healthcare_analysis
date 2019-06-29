@@ -85,6 +85,8 @@ def verifyTeam(team):
             teamValid = True
             print(team)
             return teamValid
+        else:
+            exit() # can't graph + perform gradient descent if function isn't smooth
 
 team = []
 categories = [physBulk, physSpd, spBulk, spSpd, tank, stealthRock]
