@@ -1,0 +1,16 @@
+# initialize gradient descent on smooth cosine graph
+zPrime = -1 * np.sin(r) # d/dx(cos x) = - sin x, so at x=r the derivative is -sin(r)
+
+# let theta = zPrime and alpha be an arbitrary 0.1
+alpha = 0.01
+iterationNum = 2
+startVal = np.dot(np.array([a]).astype(int), np.array([b]).astype(int).transpose())
+
+def ddx(x):
+    return math.sin(x)
+
+for i in range(iterationNum):
+    nextVal = startVal
+    startVal = nextVal - alpha * ddx(startVal)
+    step = nextVal - startVal
+print("minimum at: " + str(nextVal))
