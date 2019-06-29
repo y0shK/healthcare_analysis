@@ -1,43 +1,40 @@
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 
-# add together the attack stats of the sweepers, then account for magnitude
-sumStats0 = physBulkArray[0] + physSpdArray[0] + spBulkArray[0] + spSpdArray[0]
-sumStats0 = int(sumStats0)
-sumStats0 = sumStats0 / 100000000
-print(sumStats0)
+tank_0 = int(tankArray[0]) / 10
+tank_1 = int(tankArray[1]) / 10
+stealthRock_0= int(stealthRockArray[0]) / 10
+stealthRock_1 = int(stealthRockArray[1]) / 10
 
-# same process for secondary attribute (i.e. HP or speed)
-sumStats1 = physBulkArray[1] + physSpdArray[1] + spBulkArray[1] + spSpdArray[1]
-sumStats1 = int(sumStats1)
-sumStats1 = sumStats1 / 100000000
-
-# same process for tank + stealth rocker, less offensive team members
-tankStats = tankArray[0] + tankArray[1]
-tankStats = int(tankStats)
-tankStats = tankStats / 100000000
-
-stealthRockStats = stealthRockArray[1] + stealthRockArray[1]
-stealthRockStats = int(stealthRockStats)
-stealhRockStats = stealthRockStats / 100000000
-
-# initialize 2D matrix for matplotlib to use
-if sumStats0 > sumStats1:
-    a = np.arange(-1 * sumStats1, sumStats0 , 1)
-    b = np.arange(-1 * tankStats, stealthRockStats, 1)
+if tank_0 > tank_1:
+    a = np.arange(-1 * tank_1, tank_0, 1)
 else:
-    a = np.arange(-1 * sumStats0, sumStats1, 1)
-    b = np.arange(-1 * tankStats, stealthRockStats, 1)
+    a = np.arange(-1 * tank_0, tank_1, 1)
+
+if stealthRock_0 > stealthRock_1:
+    b = np.arange(-1 * stealthRock_1, stealthRock_0, 1)
+else:
+    b = np.arange(-1 * stealthRock_0, stealthRock_1, 1)
 
 a, b = np.meshgrid(a, b)
 r = np.sqrt(a**2 + b**2)
-z = np.sin(r)
+
+# base graph is cos x, plug in point (r, cos(r))
+z = np.cos(r) # use sinusoidal to reduce size of input & scale it
+#if RuntimeWarning or ZeroDivisionError:
+    #print("Division by zero occurred, graph is invalid")
+    #exit() # algorithm won't work without a smooth function
 
 surf = ax.plot_surface(a, b, z, linewidth=0, antialiased = False)
 
-ax.set_zlim(-1000, 1000)
+ax.set_title("Tank vs. Stealth Rocker Gradient Descent", fontsize=14)
+ax.set_xlabel("Tank defense + special defense", fontsize=10)
+ax.set_ylabel("Stealth Rock attack + defense", fontsize=10)
+
+ax.set_zlim(-2, 2)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+ax.set_zticks([-2, 0, 2])
 
-fig.colorbar(surf, shrink=0.5, aspect=5)
+fig.colorbar(surf, shrink=1, aspect=5)
 plt.show()
