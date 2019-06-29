@@ -1,0 +1,42 @@
+# create arrays for stats of each Pokemon, which go into matplotlib
+physBulkArray = []
+physSpdArray = []
+spBulkArray = []
+spSpdArray = []
+tankArray = []
+stealthRockArray = []
+
+def addValuesToTeam(directory):
+    global physBulkArray
+    global physSpdArray
+    global spBulkArray
+    global spSpdArray
+    global tankArray
+    global stealthRockArray
+
+    with open(directory, newline="") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            for member in team:
+                # if the team member shows up in the csv file and in the array as a suitable candidate, the stats are appended
+                if member in row and member in physBulk:
+                    physBulkArray = [row[6], row[5], row[4]]
+                if member in row and member in physSpd:
+                    physSpdArray = [row[6], row[10], row[4]]
+                if member in row and member in spBulk:
+                    spBulkArray = [row[8], row[5], row[4]]
+                if member in row and member in spSpd:
+                    spSpdArray = [row[8], row[10], row[4]]
+                if member in row and member in tank:
+                    tankArray = [row[7], row[9], row[4]]
+                if member in row and member in stealthRock:
+                    stealthRockArray = [row[6], row[7], row[4]]
+
+addValuesToTeam(csvDirectory)
+
+print(physBulkArray)
+print(physSpdArray)
+print(spBulkArray)
+print(spSpdArray)
+print(tankArray)
+print(stealthRockArray)
