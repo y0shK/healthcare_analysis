@@ -1,0 +1,35 @@
+with open(longitudinal, newline="") as file:
+    reader = csv.reader(file)
+    for row in reader:
+        group.append(row[2])
+        age.append(row[7])
+        socioEconomicStatus.append(row[9])
+        mentalStateExamination.append(row[10])
+        estimatedTotalIntracranialVolume.append(row[12])
+
+cleanArrays(socioEconomicStatus)
+cleanArrays(mentalStateExamination)
+
+# get rid of initial clarifying element to make others integers
+for element in variables:
+    element.pop(0)
+
+# convert result of dementia to integer for classification algorithm
+for element in range(len(group)):
+    if group[element] == "Nondemented":
+        group[element] = 0
+    elif group[element] == "Converted":
+        group[element] = 1
+    elif group[element] == "Demented":
+        group[element] = 2
+
+convertToIntegers(age)
+convertToIntegers(socioEconomicStatus)
+convertToIntegers(mentalStateExamination)
+convertToIntegers(estimatedTotalIntracranialVolume)
+
+print(age)
+print(socioEconomicStatus)
+print(mentalStateExamination)
+print(estimatedTotalIntracranialVolume)
+print(group)
