@@ -1,0 +1,29 @@
+def cleanArrays(array):
+    for i in range(len(array)):
+        if array[i] == '':
+            array[i] = 0
+
+def convertToIntegers(array):
+    for i in range(len(array)):
+        array[i] = int(array[i])
+
+def sigmoid(x):
+    # need 2 in numerator because demented == 2
+    return 2/(1+np.exp(-x))
+
+def create_plt(string, color, df):
+    plt.scatter(df[string], df['Group'], color='%s' % color)
+    plt.title('Groups by %s' % string, fontsize=14)
+    plt.xlabel("%s" % string, fontsize=12)
+    plt.ylabel("Group", fontsize=12)
+
+    max = df['%s' %string].max()
+    min = df['%s' %string].min()
+
+    x = np.arange(-1 * min, max, 1)
+    sig = sigmoid(x)
+    plt.plot(sig)
+
+    plt.grid(True)
+    plt.show()
+    
