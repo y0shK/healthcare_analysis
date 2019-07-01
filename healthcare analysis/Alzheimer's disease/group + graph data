@@ -1,0 +1,18 @@
+factors = {'Age': age, 'Socio-economic status': socioEconomicStatus,
+           'Mental state examination': mentalStateExamination,
+           'Estimated total intracranial volume': estimatedTotalIntracranialVolume,
+           'Group': group}
+
+df = pandas.DataFrame(factors, columns=['Age', 'Socio-economic status',
+            'Mental state examination', 'Estimated total intracranial volume',
+            'Group'])
+print(df)
+
+X = df[['Age', 'Socio-economic status', 'Mental state examination',
+        'Estimated total intracranial volume']]
+Y = df['Group']
+
+create_plt('Age', 'red', df)
+create_plt('Socio-economic status', 'blue', df)
+create_plt('Mental state examination', 'green', df)
+create_plt('Estimated total intracranial volume', 'black', df)
