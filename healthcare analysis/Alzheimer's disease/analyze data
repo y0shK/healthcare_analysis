@@ -1,5 +1,0 @@
-# build logistic model
-model = LogisticRegression()
-model.fit(X, Y)
-
-print("Logistic equation: 1/(1+e^-x) + %s" % model.intercept_[0])
