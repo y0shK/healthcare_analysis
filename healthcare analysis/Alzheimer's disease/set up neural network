@@ -1,0 +1,48 @@
+"""
+-to ensure that the neural network accurately predicts Alzheimer's,
+    we check all of the factors and divide by the mean to standardize
+    the final array with a domain of [0, 1]
+-0 -> patient with dementia, 1 -> fully converted/non-demented
+"""
+df['Age'] = 100 - df['Age'] # age is inversely proportional to remission
+
+# take the mean to standardize the final array and include all of the factors
+ageMean = df['Age'].mean()
+sesMean = df['Socio-economic status'].mean()
+mseMean = df['Mental state examination'].mean()
+estivMean = df['Estimated total intracranial volume'].mean()
+meanArray = [ageMean, sesMean, mseMean, estivMean]
+
+# standardize the sigmoid function accordingly, to return output
+def standardizedSigmoid(x, mean):
+    return x / mean
+
+# define neural network
+patientArray = [] # used as global
+
+class HealthcareAnalysis:
+    def __init__(self, weight):
+        self.weight = weight
+
+    def feedForward(self, inputHealth, inputWeights, meanArray):
+        global patientArray
+
+        # iterate through the parameters for health
+        # apply weights with matrix multiplication, not dot product
+        total = 0
+        for i in range(len(inputHealth)):
+            inputHealth[i] = inputHealth[i] * inputWeights[i]
+            total += inputHealth[i]
+
+        # find standardized total, not just raw sum based on weights
+        for i in range(0, 3):
+            standardTotal = standardizedSigmoid(total, meanArray[i])
+
+            for j in range(len(meanArray)):
+                # ensure that output is between 0 and 1
+                if 10 < standardTotal[j] < 100:
+                    standardTotal = standardTotal / 100
+                elif standardTotal[j] > 100:
+                    standardTotal = standardTotal / 1000
+            patientArray = standardTotal
+        return standardTotal
