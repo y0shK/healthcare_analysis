@@ -1,0 +1,26 @@
+# set up all parameters in master array
+healthArray = np.array([age, socioEconomicStatus, mentalStateExamination,
+                        estimatedTotalIntracranialVolume])
+
+"""
+-set health weights up; age impacts dementia with a positive correlation
+-socioeconomic status can impact treatment, but doesn't fundamentally change the disease
+-deteriorated mental state also has a positive correlation with dementia, more so than age
+-total intracranial volume is a physiological sign of dementia progression, significant
+"""
+
+ageWeight = [1]
+ses = [0.75]
+mse = [1.25]
+estiv = [1.25]
+
+# the weights are somewhat arbitrary, but add precision
+healthWeights = np.array([ageWeight, ses, mse, estiv])
+
+# initialize class instances of neural network
+healthData = HealthcareAnalysis(healthArray)
+healthCalculation = healthData.feedForward(healthArray, healthWeights, meanArray)
+
+# output of 1 implies best outcome of remission
+print("\nArray of patients, with domain [0,1]: ")
+print(patientArray)
