@@ -1,0 +1,11 @@
+xRegression = dfDemographics[['Average life expectancy']]
+yRegression = dfDemographics['Death rate']
+
+regression = linear_model.LinearRegression()
+regression.fit(xRegression, yRegression)
+regression.coef_ = float(regression.coef_)
+
+print("\nY-intercept: " + str(regression.intercept_))
+print("Coefficient: " + str(regression.coef_))
+print("Average life expectancy equation: y= %sx + %s"
+      % (str(regression.coef_), regression.intercept_))
