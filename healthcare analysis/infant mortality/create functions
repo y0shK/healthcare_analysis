@@ -1,0 +1,33 @@
+# get rid of value that would otherwise obfuscate data processing
+def cleanArrays(array):
+    for i in range(len(array)):
+        if array[i] == '':
+            array[i] = 0
+
+def convertToFloats(array):
+    for i in range(len(array)):
+        array[i] = float(array[i])
+
+cleanArrays(averageLifeExpectancy)
+convertToFloats(mortalityRate)
+convertToFloats(averageLifeExpectancy)
+convertToFloats(ageAdjustedDeathRate)
+
+def create_plt(string2, string1, color, df):
+    plt.scatter(df['%s' %string1], df['%s' %string2], color='%s' % color)
+    plt.title('%s vs. %s' % (string1, string2), fontsize=14)
+    plt.xlabel("%s" % string1, fontsize=12)
+    plt.ylabel("%s" % string2, fontsize=12)
+    plt.grid(True)
+    plt.show()
+
+dataArray = [typeInfant, mortalityRate, race, sex, averageLifeExpectancy, ageAdjustedDeathRate]
+
+# standardize array amounts
+for data in dataArray:
+    if len(data) > 198:
+        del data[198:len(data)]
+
+# print data for reference, above prediction of trend line
+for data in dataArray:
+    print(data)
