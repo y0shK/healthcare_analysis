@@ -1,0 +1,43 @@
+import csv
+import pandas
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+"""
+use various algorithms to assess infant death
+-classify infants by birth type and demographics
+
+links referenced:
+-https://stackoverflow.com/questions/627435/how-to-remove-an-element-from-a-list-by-index
+-https://stackoverflow.com/questions/3777861/setting-y-axis-limit-in-matplotlib
+"""
+
+infantMortalityCSV = '/home/yash/Downloads/infantmortality.csv'
+lifeExpectancyCSV = '/home/yash/Downloads/life.csv'
+
+# infant mortality
+typeInfant = []
+mortalityRate = []
+
+# life expectancy
+race = []
+sex = []
+averageLifeExpectancy = []
+ageAdjustedDeathRate = [] # standardizes rates of death in very different geographies/demographics
+
+with open(infantMortalityCSV, newline="") as file:
+    reader = csv.reader(file)
+    next(file) # skip intro line initializing data
+    for row in reader:
+        typeInfant.append(row[0])
+        mortalityRate.append(row[2])
+
+with open(lifeExpectancyCSV, newline="") as file:
+    reader = csv.reader(file)
+    for i in range(0, 2):
+        next(file) # eliminate head + zero garbage value
+    for row in reader:
+        race.append(row[1])
+        sex.append(row[2])
+        averageLifeExpectancy.append(row[3])
+        ageAdjustedDeathRate.append(row[4])
