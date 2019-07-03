@@ -41,3 +41,26 @@ with open(lifeExpectancyCSV, newline="") as file:
         sex.append(row[2])
         averageLifeExpectancy.append(row[3])
         ageAdjustedDeathRate.append(row[4])
+
+create_plt('Infant type', 'Mortality rate', 'red', dfFactors)
+create_plt('Race', 'Death rate', 'blue', dfDemographics)
+create_plt('Sex', 'Death rate', 'green', dfDemographics)
+create_plt('Average life expectancy', 'Death rate', 'yellow', dfDemographics)
+
+infantFactors = {'Infant type': typeInfant, 'Mortality rate': mortalityRate}
+infantDemographics = {'Race': race, 'Sex': sex, 'Average life expectancy':
+            averageLifeExpectancy, 'Death rate': ageAdjustedDeathRate}
+
+dfFactors = pandas.DataFrame(infantFactors, columns=
+            ['Infant type', 'Mortality rate'])
+dfDemographics = pandas.DataFrame(infantDemographics, columns=
+            ['Race', 'Sex', 'Average life expectancy', 'Death rate'])
+
+X1 = dfFactors['Infant type']
+Y1 = dfFactors['Mortality rate']
+
+X2 = dfDemographics[['Race', 'Sex', 'Average life expectancy']]
+Y2 = dfDemographics['Death rate']
+
+xRegression = dfDemographics[['Average life expectancy']]
+yRegression = dfDemographics['Death rate']
