@@ -1,6 +1,7 @@
 import csv
 import pandas
 import matplotlib.pyplot as plt
+import sklearn
 from sklearn import linear_model
 
 """
@@ -10,6 +11,8 @@ use various algorithms to assess infant death
 links referenced:
 -https://stackoverflow.com/questions/627435/how-to-remove-an-element-from-a-list-by-index
 -https://stackoverflow.com/questions/3777861/setting-y-axis-limit-in-matplotlib
+-https://levelup.gitconnected.com/building-a-decision-tree-from-scratch-in-python-machine-learning-from-scratch-part-ii-6e2e56265b19
+-https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
 """
 
 infantMortalityCSV = '/home/yash/Downloads/infantmortality.csv'
