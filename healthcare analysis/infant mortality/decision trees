@@ -1,6 +1,6 @@
 """
 for decision tree, split between variables to make a diagnosis
-I based the code off of the following link:
+I based the code off of the following link (and the link is in this repo's comment):
     https://levelup.gitconnected.com/building-a-decision-tree-from-scratch-in-python-machine-learning-from-scratch-part-ii-6e2e56265b19
 """
 from sklearn.metrics import mean_squared_error
