@@ -1,0 +1,18 @@
+regressionTumor = linear_model.LinearRegression()
+regressionTumor.fit(xTumorDF, yTumorDF)
+
+regressionHealthy = linear_model.LinearRegression()
+regressionHealthy.fit(xHealthyDF, yHealthyDF)
+
+yIntTumor = regressionTumor.intercept_
+xCoefTumor = float(regressionTumor.coef_)
+
+yIntHealthy = regressionHealthy.intercept_
+xCoefHealthy = float(regressionHealthy.coef_)
+
+print("Equation 1: %sx + %s"  % (xCoefTumor, yIntTumor))
+print("Equation 2: %sx + %s" % (xCoefHealthy, yIntHealthy))
+
+# create graph with matplotlib to reveal trends
+graphNumericalPixels(xTumor, yTumor, 'red', True) # graphing tumors
+graphNumericalPixels(xHealthy, yHealthy, 'blue', False) # non-tumors
