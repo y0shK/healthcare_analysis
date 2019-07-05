@@ -21,4 +21,18 @@ equalizeArrays(xTumor, xHealthy)
 equalizeArrays(yTumor, yHealthy)
 
 print(xHealthy)
-print(yHealthy)
+print(str(yHealthy) + "\n")
+
+# create dictionary to graph
+graphTumor = {'xTumor': xTumor, 'yTumor': yTumor}
+graphHealthy = {'xHealthy': xHealthy, 'yHealthy': yHealthy}
+
+df_tumor = pandas.DataFrame(graphTumor, columns=['xTumor', 'yTumor'])
+df_healthy = pandas.DataFrame(graphHealthy, columns=['xHealthy', 'yHealthy'])
+
+# initialize DataFrame + use sklearn for linear regression
+xTumorDF = df_tumor[['xTumor']]
+xHealthyDF = df_healthy[['xHealthy']]
+
+yTumorDF = df_tumor['yTumor']
+yHealthyDF = df_healthy['yHealthy']
