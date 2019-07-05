@@ -1,26 +1,14 @@
 for jpg in os.listdir('/home/yash/Downloads/brain_images/tumor/'):
     tumor.append(jpg)
     imageBrainTumor = image.imread(directoryTumor+jpg)
-    data = asarray(imageBrainTumor)
     # data.shape gives the shape of the array, in width x height x RGB used
-    dataTuple = data.shape
-    tumor_shapes.append(dataTuple)
 
-    dataShapeList = list(dataTuple)
-    xTumor.append(dataShapeList[0])
-    yTumor.append(dataShapeList[1])
+    tupleToList(tumor_shapes, imageBrainTumor, xTumor, yTumor)
 
 for jpg in os.listdir('/home/yash/Downloads/brain_images/no_tumor/'):
     no_tumor.append(jpg)
     imageBrainHealthy = image.imread(directoryNoTumor+jpg)
-    data = asarray(imageBrainHealthy)
-
-    dataTuple = data.shape
-    no_tumor_shapes.append(dataTuple)
-
-    dataShapeList = list(dataTuple)
-    xHealthy.append(dataShapeList[0])
-    yHealthy.append(dataShapeList[1])
+    tupleToList(no_tumor_shapes, imageBrainHealthy, xHealthy, yHealthy)
 
 equalizeArrays(tumor, no_tumor)
 equalizeArrays(tumor_shapes, no_tumor_shapes)
