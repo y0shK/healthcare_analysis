@@ -20,8 +20,11 @@ Links referenced:
 -https://stackoverflow.com/questions/45554008/error-in-python-script-expected-2d-array-got-1d-array-instead
 """
 
+# test variables are for the machine to analyze with linear regression and predict health
+
 directoryTumor = '/home/yash/Downloads/brain_images/tumor/'
 directoryNoTumor = '/home/yash/Downloads/brain_images/no_tumor/'
+directoryTest = '/home/yash/Downloads/brain_images/test/'
 
 # 41 elements in each dataset, with and without tumors
 tumor = []
@@ -29,8 +32,20 @@ tumor_shapes = []
 no_tumor = []
 no_tumor_shapes = []
 
+testSet = []
+testSetShapes = []
+
 # create arrays to append width and height of pictures, to have data to graph
 xHealthy = []
 yHealthy = []
+
 xTumor = []
 yTumor = []
+
+xTest = []
+yTest = []
+
+# create global variables to use and print in graphing function call
+mseTumor = 0
+mseHealthy = 0
+dataSetLen = 0
