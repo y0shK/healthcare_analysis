@@ -1,5 +1,5 @@
 # function calls the image as a set of numbers, which are categorized to make them graph-friendly
-def tupleToList(shapes, dataFunction, imageFunction, tuple, list, xFn, yFn):
+def tupleToList(shapes, imageFunction, xFn, yFn):
     dataFunction = asarray(imageFunction)
 
     tuple = dataFunction.shape
@@ -8,9 +8,26 @@ def tupleToList(shapes, dataFunction, imageFunction, tuple, list, xFn, yFn):
     dataFunctionList = list(tuple)
     xFn.append(dataFunctionList[0])
     yFn.append(dataFunctionList[1])
-    
+
 # make sure the datasets are the same length for further prediction
 def equalizeArrays(array1, array2):
     if len(array2) > len(array1):
         del array2[len(array1):len(array2)]
-        
+
+def graphNumericalPixels(x, y, color, tumorBool):
+    plt.scatter(x, y, color='%s' % color)
+    if tumorBool:
+        plt.title('Tumor graph: width vs. height', fontsize=14)
+    else:
+        plt.title("Non-tumor graph: width vs. height", fontsize=14)
+    plt.xlabel('Width (pixels)', fontsize=12)
+    plt.ylabel("Height (pixels)", fontsize=12)
+    plt.grid(True)
+
+    # plot a linear polynomial for a trend line
+    z = np.polyfit(x, y, 1)
+    f = np.poly1d(z)
+    plt.plot(x, f(x))
+
+    plt.show()
+    
