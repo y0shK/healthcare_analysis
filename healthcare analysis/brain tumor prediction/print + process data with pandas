@@ -3,6 +3,9 @@ print(tumor_shapes)
 print(no_tumor)
 print(no_tumor_shapes)
 
+print("\n" + str(testSet))
+print(testSetShapes)
+
 print("\nNumber of brains with tumors: " + str(len(tumor)))
 print("Number of brains without tumors: " + str(len(no_tumor)) + "\n")
 
@@ -21,14 +24,19 @@ equalizeArrays(xTumor, xHealthy)
 equalizeArrays(yTumor, yHealthy)
 
 print(xHealthy)
-print(str(yHealthy) + "\n")
+print(yHealthy)
+
+print(xTest)
+print(str(yTest) + "\n")
 
 # create dictionary to graph
 graphTumor = {'xTumor': xTumor, 'yTumor': yTumor}
 graphHealthy = {'xHealthy': xHealthy, 'yHealthy': yHealthy}
+graphTest = {'xTest': xTest, 'yTest': yTest}
 
 df_tumor = pandas.DataFrame(graphTumor, columns=['xTumor', 'yTumor'])
 df_healthy = pandas.DataFrame(graphHealthy, columns=['xHealthy', 'yHealthy'])
+df_test = pandas.DataFrame(graphTest, columns=['xTest', 'yTest'])
 
 # initialize DataFrame + use sklearn for linear regression
 xTumorDF = df_tumor[['xTumor']]
