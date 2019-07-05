@@ -1,3 +1,4 @@
+# 41 images in tumor set
 for jpg in os.listdir('/home/yash/Downloads/brain_images/tumor/'):
     tumor.append(jpg)
     imageBrainTumor = image.imread(directoryTumor+jpg)
@@ -5,10 +6,17 @@ for jpg in os.listdir('/home/yash/Downloads/brain_images/tumor/'):
 
     tupleToList(tumor_shapes, imageBrainTumor, xTumor, yTumor)
 
+# 41 images in healthy set
 for jpg in os.listdir('/home/yash/Downloads/brain_images/no_tumor/'):
     no_tumor.append(jpg)
     imageBrainHealthy = image.imread(directoryNoTumor+jpg)
     tupleToList(no_tumor_shapes, imageBrainHealthy, xHealthy, yHealthy)
+
+# 25 images in test set (can add as many as are necessary by changing the entries in the folder)
+for jpg in os.listdir("/home/yash/Downloads/brain_images/test/"):
+    testSet.append(jpg)
+    imageBrainTest = image.imread(directoryTest+jpg)
+    tupleToList(testSetShapes, imageBrainTest, xTest, yTest)
 
 equalizeArrays(tumor, no_tumor)
 equalizeArrays(tumor_shapes, no_tumor_shapes)
