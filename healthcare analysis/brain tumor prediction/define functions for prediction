@@ -14,7 +14,7 @@ def equalizeArrays(array1, array2):
     if len(array2) > len(array1):
         del array2[len(array1):len(array2)]
 
-def graphNumericalPixels(x, y, color, tumorBool):
+def graphNumericalPixels(x, y, color, tumorBool, xTest, yTest):
     plt.scatter(x, y, color='%s' % color)
     if tumorBool:
         plt.title('Tumor graph: width vs. height', fontsize=14)
@@ -29,5 +29,23 @@ def graphNumericalPixels(x, y, color, tumorBool):
     f = np.poly1d(z)
     plt.plot(x, f(x))
 
+    # plot test data and find how close it is to each trend line
+    plt.scatter(xTest, yTest, color='green')
     plt.show()
-    
+
+    mseSum = 0
+    global mseTumor
+    global mseHealthy
+    global dataSetLen
+    dataSetLen = len(xTest)
+
+    for i in range(dataSetLen): # iterate through all of the test set
+        mse = np.mean(np.sqrt(np.abs(y[i] - f(x)))**2) # take difference of scatter point and trend line
+        mseSum += mse
+    if tumorBool:
+        print("Tumor mean error: " + str(mseSum))
+        mseTumor = mseSum
+    else:
+        print("Non-tumor mean error: " + str(mseSum))
+        mseHealthy = mseSum
+        
