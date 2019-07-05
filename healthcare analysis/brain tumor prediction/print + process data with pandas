@@ -1,0 +1,24 @@
+print(tumor)
+print(tumor_shapes)
+print(no_tumor)
+print(no_tumor_shapes)
+
+print("\nNumber of brains with tumors: " + str(len(tumor)))
+print("Number of brains without tumors: " + str(len(no_tumor)) + "\n")
+
+# use DataFrame to organize data
+brainFactors = {'Tumor': tumor, 'Non-tumor': no_tumor,
+                'Tumor shapes': tumor_shapes, 'Non-tumor shapes': no_tumor_shapes}
+
+df = pandas.DataFrame(brainFactors, columns=['Tumor', 'Non-tumor',
+                      'Tumor shapes', 'Non-tumor shapes'])
+print(df)
+
+print(xTumor)
+print(yTumor)
+
+equalizeArrays(xTumor, xHealthy)
+equalizeArrays(yTumor, yHealthy)
+
+print(xHealthy)
+print(yHealthy)
