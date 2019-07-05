@@ -16,3 +16,10 @@ print("Equation 2: %sx + %s" % (xCoefHealthy, yIntHealthy))
 # create graph with matplotlib to reveal trends
 graphNumericalPixels(xTumor, yTumor, 'red', True) # graphing tumors
 graphNumericalPixels(xHealthy, yHealthy, 'blue', False) # non-tumors
+
+if mseTumor > mseHealthy:
+    print("\nThe data set (of length %s) contains more brains with tumors than without." % dataSetLen)
+elif mseTumor < mseHealthy:
+    print("\nThe data set (of length %s) contains more brains without tumors than with." % dataSetLen)
+elif mseTumor == mseHealthy:
+    print("\nThe data set (of length %s) contains exactly as many brains with tumors as without." % dataSetLen)
