@@ -1,0 +1,33 @@
+from matplotlib import image
+from numpy import asarray
+import os
+import pandas
+import matplotlib.pyplot as plt
+
+"""
+Goal: analyze pictures of healthy and tumored brains for visual machine learning
+-predict which brains are healthy and which need treatment graphically
+-perform a linear regression with given data to fit in new data
+
+Links referenced:
+-https://stackoverflow.com/questions/48729915/reading-images-in-python
+-https://machinelearningmastery.com/how-to-load-and-manipulate-images-for-deep-learning-in-python-with-pil-pillow/
+-https://matplotlib.org/users/image_tutorial.html
+-https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
+-https://stackoverflow.com/questions/16296643/convert-tuple-to-list-and-back
+"""
+
+directoryTumor = '/home/yash/Downloads/brain_images/tumor/'
+directoryNoTumor = '/home/yash/Downloads/brain_images/no_tumor/'
+
+# 41 elements in each dataset, with and without tumors
+tumor = []
+tumor_shapes = []
+no_tumor = []
+no_tumor_shapes = []
+
+# create arrays to append width and height of pictures, to have data to graph
+xHealthy = []
+yHealthy = []
+xTumor = []
+yTumor = []
