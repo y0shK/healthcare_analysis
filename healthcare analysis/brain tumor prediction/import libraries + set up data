@@ -1,8 +1,10 @@
 from matplotlib import image
 from numpy import asarray
+from sklearn import linear_model
 import os
 import pandas
 import matplotlib.pyplot as plt
+import numpy as np
 
 """
 Goal: analyze pictures of healthy and tumored brains for visual machine learning
@@ -15,6 +17,7 @@ Links referenced:
 -https://matplotlib.org/users/image_tutorial.html
 -https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
 -https://stackoverflow.com/questions/16296643/convert-tuple-to-list-and-back
+-https://stackoverflow.com/questions/45554008/error-in-python-script-expected-2d-array-got-1d-array-instead
 """
 
 directoryTumor = '/home/yash/Downloads/brain_images/tumor/'
