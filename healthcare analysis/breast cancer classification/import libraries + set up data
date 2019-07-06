@@ -1,0 +1,36 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+"""
+Goal: predict whether breast cancer is malignant or benign given several variables
+-specifically using area & smoothness and concavity & symmetry in pairs as dependent
+-diagnosis (M or B) is independent
+
+Links referenced:
+-https://www.kaggle.com/uciml/breast-cancer-wisconsin-data
+-https://stackoverflow.com/questions/20297317/python-dataframe-pandas-drop-column-using-int
+-https://stackoverflow.com/questions/23748995/pandas-dataframe-column-to-list
+-https://stackoverflow.com/questions/27009247/python-find-min-max-and-average-of-a-list-array
+-https://stackoverflow.com/questions/37711538/matplotlib-3d-axes-ticks-labels-and-latex
+"""
+
+csvDirectory = '/home/yash/Downloads/breast_cancer/data.csv'
+cancerData = pd.read_csv(csvDirectory)
+cancerData.drop(cancerData.columns[-1], axis=1, inplace=True) # drop to get rid of NaN axis
+print(cancerData)
+
+# instantiate lists to gather data
+area = cancerData['area_mean'].values.tolist()
+smoothness = cancerData['smoothness_mean'].values.tolist()
+concavity = cancerData['concavity_mean'].values.tolist()
+symmetry = cancerData['symmetry_mean'].values.tolist()
+diagnosis = cancerData['diagnosis'].values.tolist()
+
+print(area)
+print(smoothness)
+print(concavity)
+print(symmetry)
+print(diagnosis) # dependent; makes this a classification ML problem
