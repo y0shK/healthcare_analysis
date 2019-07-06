@@ -1,0 +1,47 @@
+def examineVariableRelationship(x, y, xLabel, xUnits, yLabel, color): # 2D graphing
+    plt.scatter(x, y, color='%s' % color)
+    plt.xlabel('%s (%s)' % (xLabel, xUnits), fontsize=12)
+    plt.ylabel('%s' % yLabel, fontsize=12)
+    plt.grid(True)
+    plt.show()
+    
+def create3DGraph(var1, var2, sinBool, cosBool, xLabel, yLabel): # 3D graphing
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+
+    npRangeVar1 = (max(var1) - min(var1)) / 10
+    npRangeVar2 = (max(var2) - min(var2)) * 100
+    a = np.arange(-1 * max(var1), max(var1), npRangeVar1)
+    b = np.arange(-1 * max(var2), npRangeVar2)
+    a, b = np.meshgrid(a, b)
+    r = np.sqrt(a**2 + b**2)
+
+    if sinBool:
+        z = np.sin(r)
+    elif cosBool:
+        z = np.cos(r)
+
+    surf = ax.plot_surface(a, b, z, linewidth=0, antialiased=False)
+    ax.set_title('Cancer classification vs. tumor variables')
+    ax.set_xlabel('%s' % xLabel)
+    ax.set_ylabel('%s' % yLabel)
+    ax.set_zlabel('tumor classification')
+
+    ax.set_zlim(-1, 1)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    ax.set_zticks([-1, 0, 1])
+
+    fig.colorbar(surf, shrink=1, aspect=5)
+    plt.show()
+
+examineVariableRelationship(area, diagnosis, 'Area', 'm^2', 'Result', 'red')
+examineVariableRelationship(smoothness, diagnosis, 'Smoothness', 'micrometers', 'Result', 'blue')
+examineVariableRelationship(concavity, diagnosis, 'Concavity', 'units', 'Result', 'green')
+examineVariableRelationship(symmetry, diagnosis, 'Symmetry', 'units', 'Result', 'black')
+
+# first boolean is for sin(r), second is for cos(r)
+create3DGraph(area, smoothness, True, False, 'm^2', 'micrometers')
+create3DGraph(area, smoothness, False, True, 'm^2', 'micrometers')
+create3DGraph(concavity, symmetry, True, False, 'units', 'units')
+create3DGraph(concavity, symmetry, False, True, 'units', 'units')
