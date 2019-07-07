@@ -1,0 +1,30 @@
+"""
+I need to examine both independent variables graphically
+-by comparing them, I can create a decision boundary with a support vector machine (SVM)
+-do this to take a closer look at the data, after a broader classification analysis
+"""
+
+mseSum = 0
+def examineIndependentVariables(x, y, depVar, xLabel, xUnits, yLabel, yUnits):
+   for i in range(0, 20):
+       if depVar[i] == 'M':
+           plt.scatter(x, y, color='red')
+       elif depVar[i] == 'B':
+           plt.scatter(x, y, color='yellow')
+   plt.xlabel('%s (%s)' % (xLabel, xUnits), fontsize=12)
+   plt.ylabel('%s (%s)' % (yLabel, yUnits), fontsize=12)
+   plt.grid(True)
+   plt.show()
+
+   # create a linear polynomial for a trend line and estimate error
+   z = np.polyfit(x, y, 2)
+   f = np.poly1d(z)
+
+   global mseSum
+   for i in range(0, 20):  # iterate through all of the test set
+       mse = np.mean(np.sqrt(np.abs(y[i] - f(x))) ** 2)  # take difference of scatter point and trend line
+       mseSum += mse
+   print("Mean sum squared error: %s" % mseSum)
+
+examineIndependentVariables(area, smoothness, diagnosis, 'Area', 'm^2', 'Smoothness', 'micrometers')
+examineIndependentVariables(concavity, symmetry, diagnosis, 'Concavity', 'units', 'Symmetry', 'units')
