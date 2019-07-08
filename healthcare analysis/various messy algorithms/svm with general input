@@ -1,0 +1,66 @@
+import pandas as pd
+import csv
+import matplotlib.pyplot as plt
+
+directory = '/home/yash/Desktop/datasets/stroke/train_2v.csv'
+
+# independent variables
+sex = []
+age = []
+hypertension = []
+heartDisease = []
+avgGlucoseLevel = []
+bmi = []
+smokingStatus = []
+
+# dependent variable
+stroke = []
+
+with open(directory, newline="") as file:
+    reader = csv.reader(file)
+    next(file)
+    iterator = 0
+    for row in reader:
+        sex.append(row[1])
+        age.append(row[2])
+        hypertension.append(row[3])
+        heartDisease.append(row[4])
+        avgGlucoseLevel.append(row[8])
+        bmi.append(row[9])
+        smokingStatus.append(row[10])
+        stroke.append(row[11])
+        iterator += 1
+        if iterator > 100:
+            break
+
+print(sex)
+print(age)
+print(hypertension)
+print(heartDisease)
+print(avgGlucoseLevel)
+print(bmi)
+print(smokingStatus)
+
+variables = {'Sex': sex, 'Age': age, 'Hypertension': hypertension,
+           'Heart disease': heartDisease, 'Average glucose': avgGlucoseLevel,
+           'BMI': bmi, 'Smoking status': smokingStatus,
+           'Stroke result': stroke}
+
+stringArray = ['Sex', 'Age',
+            'Hypertension', 'Heart disease', 'Average glucose', 'BMI',
+            'Smoking status', 'Stroke result']
+
+df = pd.DataFrame(variables, columns=['Sex', 'Age',
+            'Hypertension', 'Heart disease', 'Average glucose', 'BMI',
+            'Smoking status', 'Stroke result'])
+
+def plotVariables(var1, var2, var1Label, var2Label):
+    plt.scatter(var1, var2)
+    plt.title('%s vs. %s' % (var2Label, var1Label)) # dependent vs. independent convention
+    plt.xlabel("%s" % var1Label)
+    plt.ylabel("%s" % var2Label)
+    plt.grid(True)
+    plt.show()
+
+for var in stringArray:
+    plotVariables(df[var], df['Stroke result'], 'Variable', 'Stroke result')
