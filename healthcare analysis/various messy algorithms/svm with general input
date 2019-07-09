@@ -64,3 +64,8 @@ def plotVariables(var1, var2, var1Label, var2Label):
 
 for var in stringArray:
     plotVariables(df[var], df['Stroke result'], 'Variable', 'Stroke result')
+
+boxAge = plt.boxplot(np.array(age).astype(np.float))
+boxHeartDisease = plt.boxplot(np.array(heartDisease).astype(np.float))
+boxAvgGlucose = plt.boxplot(np.array(avgGlucoseLevel).astype(np.float))
+plt.show()
