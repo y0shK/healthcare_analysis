@@ -11,7 +11,8 @@ def sigmoid(x):
     # need 2 in numerator because demented == 2
     return 2/(1+np.exp(-x))
 
-def create_plt(string, color, df):
+mseSum = 0
+def create_plt_groups(string, color, df):
     plt.scatter(df[string], df['Group'], color='%s' % color)
     plt.title('Groups by %s' % string, fontsize=14)
     plt.xlabel("%s" % string, fontsize=12)
@@ -23,6 +24,22 @@ def create_plt(string, color, df):
     x = np.arange(-1 * min, max, 1)
     sig = sigmoid(x)
     plt.plot(sig)
+
+    # perform mseSum variant on logistic fit to see how closely each variable affects the classification
+    global mseSum # re-initialize value to 0 every time the method is called
+
+    # this process results in a matrix because df['Group'] feeds in values in arrays, so the output is an array
+    for i in range(-1 * min, max):
+        mse = np.abs([sig[i] - df['Group']]) # math.abs(logistic "trend line" - actual value) for all values
+        mseSum += mse
+    print("Error matrix: %s" % mseSum)
+
+    # this process results in a single number, because the matrix's elements are added, not the matrix itself
+    mseMatrixSum = 0
+    for i in range(len(mseSum)):
+        mseMatrixSum += mseSum[i][0] # i is each row, 0 is each column (i.e. going through all elements)
+    mseMatrixMean = mseMatrixSum / len(mseSum)
+    print("Mean of the matrix, or the error: %s" % mseMatrixMean)
 
     plt.grid(True)
     plt.show()
