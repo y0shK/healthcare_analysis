@@ -54,17 +54,6 @@ df = pd.DataFrame(variables, columns=['Sex', 'Age',
             'Hypertension', 'Heart disease', 'Average glucose', 'BMI',
             'Smoking status', 'Stroke result'])
 
-def plotVariables(var1, var2, var1Label, var2Label):
-    plt.scatter(var1, var2)
-    plt.title('%s vs. %s' % (var2Label, var1Label)) # dependent vs. independent convention
-    plt.xlabel("%s" % var1Label)
-    plt.ylabel("%s" % var2Label)
-    plt.grid(True)
-    plt.show()
-
-for var in stringArray:
-    plotVariables(df[var], df['Stroke result'], 'Variable', 'Stroke result')
-
 boxAge = plt.boxplot(np.array(age).astype(np.float))
 boxHeartDisease = plt.boxplot(np.array(heartDisease).astype(np.float))
 boxAvgGlucose = plt.boxplot(np.array(avgGlucoseLevel).astype(np.float))
