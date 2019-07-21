@@ -1,0 +1,10 @@
+# use Bayesian model for test set
+model = GaussianNB() # Gaussian distribution, which extended naive Bayes' theorem
+xTest = np.array(xTest) # need numpy arrays for correct format
+yTest = np.array(yTest)
+xTest = xTest.reshape(-1, 1) # reshape to get xTest and yTest same length
+model.fit(xTest, yTest)
+expected = np.array(yTest)
+predicted = model.predict(xTest)
+print("\nBayesian model: %s" % predicted)
+print("Actual result: %s" % yTest)
