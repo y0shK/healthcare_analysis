@@ -1,6 +1,7 @@
 from matplotlib import image
 from numpy import asarray
 from sklearn import linear_model
+from sklearn.naive_bayes import GaussianNB
 import os
 import pandas
 import matplotlib.pyplot as plt
@@ -18,6 +19,8 @@ Links referenced:
 -https://stackoverflow.com/questions/10377998/how-can-i-iterate-over-files-in-a-given-directory
 -https://stackoverflow.com/questions/16296643/convert-tuple-to-list-and-back
 -https://stackoverflow.com/questions/45554008/error-in-python-script-expected-2d-array-got-1d-array-instead
+-https://dzone.com/articles/naive-bayes-tutorial-naive-bayes-classifier-in-pyt
+-https://stackoverflow.com/questions/35082140/preprocessing-in-scikit-learn-single-sample-depreciation-warning
 """
 
 # test variables are for the machine to analyze with linear regression and predict health
