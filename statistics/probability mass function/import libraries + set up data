@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import binom
+
+"""
+Goal: use a probability mass function (specifically binomial distribution) to analyze & display Alzheimer's results
+Links referenced:
+-https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.binomial.html
+-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html
+-https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.isnull.html
+-https://scipython.com/book/chapter-7-matplotlib/examples/using-axvlines-and-axhlines/
+-https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.plot.html
+-https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.axes.Axes.vlines.html
+-https://matplotlib.org/2.0.0/api/_as_gen/matplotlib.axes.Axes.legend.html
+"""
+
+longitudinalData = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
+alzData = pd.read_csv(longitudinalData)
+print(alzData)
+
+age = alzData['Age'].values.tolist()
+ses = alzData['SES'].values.tolist()
+mse = alzData['MMSE'].values.tolist() # mental state examination
+eTIV = alzData['eTIV'].values.tolist() # estimated total intracranial volume
+group = alzData['Group'].values.tolist() # Alzheimer's diagnosis
+
+factors = [age, ses, mse, eTIV]
