@@ -1,0 +1,18 @@
+# consecutively create each graph and observe how closely it fits the binomial distribution
+for factor in factors:
+    fig, ax = plt.subplots(1, 1)
+    n, p = max(factor), 0.5
+    mean, var = binom.stats(n, p, moments='mv')
+
+    # ppf is percent point function, which is the inverse of the cumulative distribution function
+    # disjoints probabilities to display them in a binomial-like graph
+    # pmf is probability mass function, which displays probabilities on a Cartesian scale
+    x = np.arange(binom.ppf(0.01, n, p), binom.ppf(0.99, n, p))
+    ax.plot(x, binom.pmf(x, n, p), 'bo', label='binom pmf')
+    ax.vlines(x, 0, binom.pmf(x, n, p), colors='r')
+
+    rv = binom(n, p)
+    ax.vlines(x, 0, rv.pmf(x), colors='k', linestyles='-', label='frozen pmf')
+    ax.legend(loc='best', frameon=False)
+    plt.show()
+    
