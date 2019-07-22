@@ -1,0 +1,13 @@
+def cleanNAN(array): # get rid of Pandas' undefined values, which would ruin the continuity of the pmf
+    for i in range(len(array)):
+        if pd.isna(array[i]):
+            array[i] = 0.0
+
+def convertToIntegers(array):
+    for i in range(len(array)):
+        array[i] = int(array[i])
+
+def equalizeArrays(array1, array2): # equal input sizes are necessary for each graph to maintain the same scale
+    if len(array2) > len(array1):
+        del array2[len(array1):len(array2)]
+        
