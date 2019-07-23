@@ -10,4 +10,28 @@ def convertToIntegers(array):
 def equalizeArrays(array1, array2): # equal input sizes are necessary for each graph to maintain the same scale
     if len(array2) > len(array1):
         del array2[len(array1):len(array2)]
+
+def sigmoid(x):
+    # as x increases, the function decreases
+    return 1/(1+np.exp(-x))
+
+def combination(n, r): # n > r
+    r = min(r, n-r)
+    if r < 0:
+        return 0
+    # avoid factorials by computing them from n to n-r, implicitly canceling out common factors
+    numerator = reduce(op.mul, range(n, n-r, -1), 1)
+    denominator = reduce(op.mul, range(1, r+1), 1)
+    return numerator / denominator
+
+def binomialDistribution(n, r, p):
+    pSuccess = p ** r
+    # pFailure complements pSuccess
+    pFailure = 1 - pSuccess
+    combinationCalc = combination(n, r)
+    # binomial distribution theorem returns the following probability
+    probability = combinationCalc * pSuccess * pFailure
+    print("Probability of no disease: %s" % pSuccess)
+    print("Probability of disease: %s" % pFailure)
+    print("Binomial theorem output: %s" % probability)
         
