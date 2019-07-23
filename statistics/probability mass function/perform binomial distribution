@@ -4,6 +4,13 @@ for factor in factors:
     n, p = max(factor), 0.5
     mean, var = binom.stats(n, p, moments='mv')
 
+    # p(having the disease) is testing positive, so (1-p) = p(not having the disease)
+
+    print("\nMax: %s" % max(factor))
+    print("Min: %s" % min(factor))
+    binomialDistribution(int(sigmoid(max(factor))), int(sigmoid(min(factor))), probPos)
+
+
     # ppf is percent point function, which is the inverse of the cumulative distribution function
     # disjoints probabilities to display them in a binomial-like graph
     # pmf is probability mass function, which displays probabilities on a Cartesian scale
