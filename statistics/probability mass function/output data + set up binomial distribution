@@ -1,0 +1,30 @@
+for factor in factors:
+    cleanNAN(factor)
+    convertToIntegers(factor)
+    equalizeArrays(factor, group)
+    print(factor)
+
+# classify groups for graphical binomial distribution
+# additionally, calculate likelihood that of all patients any given one will have Alzheimer's
+positive = 0
+negative = 0
+total_no_conversion = 0 # need to exclude converted patients for more accurate binomial result
+
+for i in range(len(group)):
+    if group[i] == 'Nondemented':
+        group[i] = 0
+        negative += 1
+        total_no_conversion += 1
+    elif group[i] == 'Demented':
+        group[i] = 1
+        positive += 1
+        total_no_conversion += 1
+    elif group[i] == 'Converted':
+        group[i] = 0.5 # judged as halfway for graphical reference
+        # the disease and remission both occur, so no net change occurs
+probPos = positive / total_no_conversion
+probNeg = negative / total_no_conversion
+
+print(group)
+print("Probability of having the disease: %s" % probPos)
+print("Probability of not having the disease: %s" % probNeg)
