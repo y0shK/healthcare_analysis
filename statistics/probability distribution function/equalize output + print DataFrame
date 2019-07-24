@@ -1,0 +1,9 @@
+def equalizeArrays(array1, array2):
+    if len(array1) > len(array2):
+        del array1[len(array2):len(array1)]
+        
+for factor in factors:
+    equalizeArrays(factor, diagnosis)
+    factor = sorted(factor) # arrange all collected values of each tumor in numerical order
+    print(factor)
+print(diagnosis)
