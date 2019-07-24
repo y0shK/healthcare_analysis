@@ -1,0 +1,36 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
+
+"""
+Goal: use normal and standard normal distributions to plot breast cancer demographics
+
+Data set:
+-https://www.kaggle.com/uciml/breast-cancer-wisconsin-data
+
+Documentation:
+-https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html
+-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html
+
+Links referenced:
+-http://www.learningaboutelectronics.com/Articles/How-to-create-a-normal-distribution-plot-in-Python-with-numpy-and-matplotlib.php
+-https://stackoverflow.com/questions/43602270/what-is-probability-density-function-in-the-context-of-scipy-stats-norm
+-https://stackoverflow.com/questions/11469336/what-is-the-difference-between-pylab-and-pyplot
+-https://stackoverflow.com/questions/22782031/pylab-documentation
+"""
+
+data = '/home/yash/Desktop/datasets/breast_cancer/data.csv'
+cancerData = pd.read_csv(data)
+cancerData.drop(cancerData.columns[-1], axis=1, inplace=True) # drop to get rid of NaN column
+print(cancerData)
+
+radius = cancerData['radius_mean'].values.tolist() # mean of distances from center to point
+texture = cancerData['texture_mean'].values.tolist() # standard deviation of gray-scale values on sample
+perimeter = cancerData['perimeter_mean'].values.tolist() # mean size of core tumor
+smoothness = cancerData['smoothness_mean'].values.tolist() # mean of variation in smoothness
+concavity = cancerData['concavity_mean'].values.tolist() # mean of severity of concave portions of tumor
+
+diagnosis = cancerData['diagnosis'].values.tolist()
+factors = [radius, texture, perimeter, smoothness, concavity]
+factorStrings = ['radius', 'texture', 'perimeter', 'smoothness', 'concavity']
