@@ -8,6 +8,10 @@ from scipy.stats import binom
 
 """
 Goal: use a probability mass function (specifically binomial distribution) to analyze & display Alzheimer's results
+
+Data set used:
+-https://www.kaggle.com/jboysen/mri-and-alzheimers
+
 Documentation:
 -https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.binomial.html
 -https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html
@@ -16,6 +20,7 @@ Documentation:
 -https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.axes.Axes.plot.html
 -https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.axes.Axes.vlines.html
 -https://matplotlib.org/2.0.0/api/_as_gen/matplotlib.axes.Axes.legend.html
+
 Links referenced:
 -https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python
 -https://www.w3schools.com/python/ref_func_range.asp
