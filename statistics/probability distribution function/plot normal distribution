@@ -1,0 +1,11 @@
+for i in range(len(factors)):
+    # plot normal distribution with probability density function
+    normalFit = stats.norm.pdf(factors[i], np.mean(factors[i]), np.std(factors[i]))
+
+    plt.title("Probability density function: %s" % factorStrings[i])
+    plt.xlabel("%s" % factorStrings[i])
+    plt.ylabel("Percentage (%)")
+    plt.plot(factors[i], normalFit)
+    plt.hist(factors[i], density=True)  # density plots the pdf as a general function to contextualize the histogram
+    plt.show()
+    
