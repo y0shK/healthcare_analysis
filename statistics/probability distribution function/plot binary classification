@@ -1,0 +1,28 @@
+def splitData(list):
+    # create two lists by plucking alternating values from master list and appending them
+    listOdd = list[1::2] # elements from 1 iterating by 2
+    listEven = list[::2] # elements from 0 iterating by 2
+    return listOdd, listEven
+
+# append half the list to the split list, then use that for plotting the classification graph
+split2DList = []
+for i in range(len(factors)):
+    # split & sort the lists
+    var1, var2 = splitData(factors[i])
+    var1 = sorted(var1)
+    var2 = sorted(var2)
+    print("\nOdd list for %s: %s" % (factorStrings[i], var1))
+    print("Even list for %s: %s" % (factorStrings[i], var2))
+    split2DList.append(var1)
+
+# use var1, half the data set, to create the boolean classification graph
+count = 0
+
+for i in range(len(split2DList)):
+    plt.title("Probability scatter plot: %s" % factorStrings[count])
+    plt.xlabel("%s" % factorStrings[count])
+    plt.ylabel("Diagnosis")
+    plt.scatter(factors[count], diagnosis)
+    plt.show()
+    count += 1
+    
