@@ -1,0 +1,22 @@
+# find probability of cancer through classification
+malignant = []
+benign = []
+
+for individual in diagnosis:
+    if individual == 'M':
+        malignant.append(individual)
+    elif individual == 'B':
+        benign.append(individual)
+
+print("\nChance of cancer: %s" % malignant)
+print("Chance of no cancer: %s" % benign)
+
+# examine probability after sifting through results
+probCancer = len(malignant) / len(diagnosis)
+print("Cancer percentage: %s%%" % (probCancer * 10))  # multiply by ten for decimal to % conversion
+
+# display normal probability plots; if linear, then likely normally distributed
+for i in range(len(factors)):
+    stats.probplot(factors[i], dist='norm', plot=plt)
+    plt.title("Normal prob plot: %s" %factorStrings[i])
+    plt.show()
