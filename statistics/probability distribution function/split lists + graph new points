@@ -1,0 +1,43 @@
+def splitData(list):
+    # create two lists by plucking alternating values from master list and appending them
+    listOdd = list[1::2] # elements from 1 iterating by 2
+    listEven = list[::2] # elements from 0 iterating by 2
+    return listOdd, listEven
+
+split2DList1 = []
+split2DList2 = []
+for i in range(len(factors)):
+    # split & sort the lists
+    var1, var2 = splitData(factors[i])
+    var1 = sorted(var1)
+    var2 = sorted(var2)
+    print("\nOdd list for %s: %s" % (factorStrings[i], var1))
+    print("Even list for %s: %s" % (factorStrings[i], var2))
+    split2DList1.append(var1)
+    split2DList2.append(var2)
+
+# use var1, half the data set, to create the boolean classification graph
+count = 0
+
+for i in range(len(split2DList1)):
+    plt.title("Probability scatter plot: %s" % factorStrings[count])
+    plt.xlabel("%s" % factorStrings[count])
+    plt.ylabel("Diagnosis")
+    plt.scatter(factors[count], diagnosis)
+    plt.show()
+    count += 1
+
+split2DList1 = split2DList1[0] # split2DList is an array like [[x]], but I need the array [x]
+split2DList2 = split2DList2[0]
+print(split2DList1)
+print(split2DList2)
+
+# use var2, the other half, to plot new points on that boolean classification graph
+equalizeArrays(diagnosis, split2DList2)
+print(len(split2DList2))
+print(len(split2DList1))
+print(len(diagnosis))
+count = 0
+for i in range(len(split2DList1)):
+    plt.scatter(split2DList2[count], diagnosis)
+    
