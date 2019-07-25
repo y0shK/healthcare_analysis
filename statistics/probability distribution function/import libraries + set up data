@@ -18,6 +18,8 @@ Links referenced:
 -https://stackoverflow.com/questions/43602270/what-is-probability-density-function-in-the-context-of-scipy-stats-norm
 -https://stackoverflow.com/questions/11469336/what-is-the-difference-between-pylab-and-pyplot
 -https://stackoverflow.com/questions/22782031/pylab-documentation
+-https://stackoverflow.com/questions/752308/split-list-into-smaller-lists-split-in-half
+-https://stackoverflow.com/questions/11702414/split-a-list-into-half-by-even-and-odd-elements
 """
 
 data = '/home/yash/Desktop/datasets/breast_cancer/data.csv'
