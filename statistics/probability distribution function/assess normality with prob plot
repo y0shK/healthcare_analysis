@@ -20,3 +20,19 @@ for i in range(len(factors)):
     stats.probplot(factors[i], dist='norm', plot=plt)
     plt.title("Normal prob plot: %s" %factorStrings[i])
     plt.show()
+
+# avoid TypeError so seaborn can use the diagnoses
+diagnosis_integer = []
+for i in range(len(diagnosis)):
+    if diagnosis[i] == 'M':
+        diagnosis_integer.append(1)
+    elif diagnosis[i] == 'B':
+        diagnosis_integer.append(0)
+print(diagnosis_integer)
+
+for i in range(len(factors)):
+    sns.distplot(factors[i])
+    plt.title('Frequency histogram for %s' % factorStrings[i])
+    plt.xlabel('%s' % factorStrings[i])
+    plt.ylabel('frequency')
+    plt.show()
