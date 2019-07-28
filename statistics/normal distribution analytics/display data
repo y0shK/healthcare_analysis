@@ -33,4 +33,6 @@ equalizeArrays(groupPosDiagnosis, eTIV)
 
 for i in range(len(alzArray)-1): # ignore group classification; don't need histogram
     create_plt_hist(alzArray[i], alzArrayStr[i])
-    
+
+for j in range(len(alzArray) - 1): # exclude group
+    confidenceInterval(alzArray[j], alzArrayStr[j])
