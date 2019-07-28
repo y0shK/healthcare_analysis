@@ -11,6 +11,8 @@ Links referenced:
 -https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
 -https://stackoverflow.com/questions/3949226/calculating-pearson-correlation-and-significance-in-python
 -https://stackoverflow.com/questions/3425439/why-does-corrcoef-return-a-matrix/3425548#3425548
+-https://stackoverflow.com/questions/38650550/cant-get-y-axis-on-matplotlib-histogram-to-display-probabilities
+-https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0
 """
 
 longitudinalData = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
