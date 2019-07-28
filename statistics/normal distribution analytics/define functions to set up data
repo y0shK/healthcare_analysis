@@ -1,0 +1,37 @@
+def cleanArrays(array):
+    for i in range(len(array)):
+        if pd.isna(array[i]):
+            array[i] = 0
+
+def convertGroupStrings(array):
+    for i in range(len(array)):
+        if array[i] == 'Nondemented':
+            array[i] = 0
+        elif array[i] == 'Demented':
+            array[i] = 1
+        elif array[i] == 'Converted':
+            array[i] = 0.5
+
+def create_plt_groups(array1, arrayString1, array2, arrayString2, color = None):
+    plt.scatter(array1, array2, color='%s' % color)
+    plt.title('%s vs. %s' % (arrayString2, arrayString1), fontsize=14)
+    plt.xlabel("%s" % arrayString1, fontsize=12)
+    plt.ylabel("%s" % arrayString2, fontsize=12)
+
+    plt.grid(True)
+    plt.show()
+
+    print("\nPearson r-coefficient for %s and %s: " % (arrayString1, arrayString2))
+    print(pearsonr(array1, array2))
+    
+def equalizeArrays(array1, array2): # equal input sizes are necessary for each graph to maintain the same scale
+    if len(array2) > len(array1):
+        del array2[len(array1):len(array2)]
+        
+def create_plt_hist(array, arrayString):
+    plt.hist(array)
+    plt.title('Frequency histogram for %s' % arrayString)
+    plt.xlabel('%s' % arrayString)
+    plt.ylabel('frequency')
+    plt.show()
+    
