@@ -35,3 +35,11 @@ def create_plt_hist(array, arrayString):
     plt.ylabel('frequency')
     plt.show()
     
+def confidenceInterval(data, dataString):
+    mean = np.mean(data)
+    stdDev = np.std(data)
+
+    # 99% confidence interval
+    meanStdPos = mean + (2.58 * stdDev)
+    meanStdNeg = mean - (2.58 * stdDev)
+    print("The 99% confidence interval for", dataString, "is: (%s, %s)" % (meanStdNeg, meanStdPos))
