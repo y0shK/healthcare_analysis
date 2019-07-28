@@ -1,0 +1,36 @@
+"""
+The following function calls aim to:
+-weigh mental state and estimated brain volume against diagnosis
+-check mental state and estimated brain volume against each other
+-examine age's impact on mental state and estimated brain volume
+
+All of them use Pearson correlation to get the correlation coefficients
+"""
+
+alzArray = [mse, eTIV, age, group]
+alzArrayStr = ['mse', 'eTIV', 'age', 'group']
+for i in range(len(alzArray)):
+    cleanArrays(alzArray[i])
+convertGroupStrings(group) # need numbers for Pearson correlation
+
+create_plt_groups(mse, 'MSE', group, 'group', 'red')
+create_plt_groups(eTIV, 'eTIV', group, 'group', 'blue')
+
+create_plt_groups(mse, 'MSE', eTIV, 'eTIV', 'green')
+create_plt_groups(eTIV, 'eTIV', mse, 'MSE', 'orange')
+
+create_plt_groups(age, 'age', mse, 'MSE', 'brown')
+create_plt_groups(age, 'age', eTIV, 'eTIV', 'black')
+
+groupPosDiagnosis = []
+for i in range(len(group)):
+    if group[i] == 1:
+        groupPosDiagnosis.append(group[i])
+
+equalizeArrays(groupPosDiagnosis, age)
+equalizeArrays(groupPosDiagnosis, mse)
+equalizeArrays(groupPosDiagnosis, eTIV)
+
+for i in range(len(alzArray)-1): # ignore group classification; don't need histogram
+    create_plt_hist(alzArray[i], alzArrayStr[i])
+    
