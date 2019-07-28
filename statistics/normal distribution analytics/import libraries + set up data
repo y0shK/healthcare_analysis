@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.stats.stats import pearsonr
 
 """
@@ -13,6 +14,10 @@ Links referenced:
 -https://stackoverflow.com/questions/3425439/why-does-corrcoef-return-a-matrix/3425548#3425548
 -https://stackoverflow.com/questions/38650550/cant-get-y-axis-on-matplotlib-histogram-to-display-probabilities
 -https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0
+-https://stackoverflow.com/questions/15033511/compute-a-confidence-interval-from-sample-data
+-https://www.dummies.com/education/math/statistics/checking-out-statistical-confidence-interval-critical-values/
+-https://stackoverflow.com/questions/15286401/print-multiple-arguments-in-python
+-https://www.geeksforgeeks.org/numpy-std-in-python/
 """
 
 longitudinalData = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
