@@ -36,3 +36,20 @@ for i in range(len(alzArray)-1): # ignore group classification; don't need histo
 
 for j in range(len(alzArray) - 1): # exclude group
     confidenceInterval(alzArray[j], alzArrayStr[j])
+    
+# test p-value for age; assume mean age for Alzheimer's is ~65
+nullHyp = 65
+experimental = np.mean(age)
+stdDevAge = np.std(age)
+sampleSize = len(age)
+
+print("Experimental value: %s" % experimental)
+print("Sample size used: %s" % sampleSize)
+
+"""
+p-value calculator used: https://www.socscistatistics.com/pvalues/normaldistribution.aspx
+according to the calculator, the p-value for age is statistically significant
+"""
+
+zValue = abs(nullHyp - experimental) / (stdDevAge / math.sqrt(sampleSize))
+print("Z-score: %s" % zValue)
