@@ -1,0 +1,37 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy.stats as stats
+
+"""
+Goal: use integral calculus to approximate the area
+    underneath curves given by heart disease data
+
+Data set: https://www.kaggle.com/ronitf/heart-disease-uci
+
+Documentation/resource links:
+-https://stackoverflow.com/questions/47645291/how-to-fill-area-under-curve-in-seaborn-distribution-plot
+-https://seaborn.pydata.org/generated/seaborn.distplot.html
+-https://matplotlib.org/3.1.1/gallery/recipes/fill_between_alpha.html
+-https://stackoverflow.com/questions/40557910/plt-plot-meaning-of-0-and-1/40558730
+"""
+
+dataLoc = '/home/yash/Desktop/datasets/heart_disease/heart.csv'
+heartData = pd.read_csv(dataLoc)
+print(heartData)
+
+age = heartData['age'].values.tolist()
+sex = heartData['sex'].values.tolist()
+cp = heartData['cp'].values.tolist() # chest pain type
+trestbps = heartData['trestbps'].values.tolist() # resting blood pressure
+restecg = heartData['restecg'].values.tolist() # resting electrocardiographic number
+exang = heartData['exang'].values.tolist() # exercise angina, or lessened blood flow to the heart
+
+factors = [age, sex, cp, trestbps, restecg, exang]
+factorStrings = ['age', 'sex', 'cp', 'trestbps', 'restecg', 'exang']
+
+heartDict = {'age': age, 'sex': sex, 'chest pain': cp, 'trestbps': trestbps,
+             'restecg': restecg, 'exang': exang}
+
+df = pd.DataFrame(heartDict, columns=['age', 'sex', 'chest pain', 'trestbps', 'restecg', 'exang'])
+print(df)
