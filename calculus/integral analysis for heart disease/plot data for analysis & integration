@@ -1,0 +1,27 @@
+create_plt_groups(age, cp, 'age', 'chest pain', 'red')
+create_plt_groups(sex, cp, 'sex', 'chest pain', 'blue')
+create_plt_groups(age, restecg, 'age', 'restecg', 'green')
+create_plt_groups(age, exang, 'age', 'exang', 'black')
+
+# use a probability plot, which creates a linear trend line if the data is normally distributed
+for i in range(len(factors)):
+    stats.probplot(factors[i], dist='norm', plot=plt)
+    plt.title('Normal plot plot for %s' % factorStrings[i])
+    plt.show()
+
+# use a plot with a curve and "trend" histogram, which allows for integration
+for j in range(len(factors)):
+    ax = sns.distplot(factors[j], fit_kws={'color': 'red'}, kde=False,
+        fit=stats.gamma, label='%s' % factorStrings[j])
+
+    line = ax.lines[0]
+    x = line.get_xydata()[:, 0] # first to last row in column 0
+    y = line.get_xydata()[:, 1] # same operation in column 1
+
+    ax.fill_between(x, y, color='red', alpha=0.3)
+
+    plt.title('Frequency histogram for %s' % factorStrings[j])
+    plt.xlabel('%s' % factorStrings[j])
+    plt.ylabel('frequency')
+    plt.show()
+    
