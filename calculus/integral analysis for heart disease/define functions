@@ -1,0 +1,9 @@
+def create_plt_groups(array1, array2, arrayString1, arrayString2, color):
+    plt.scatter(array1, array2, color='%s' % color)
+    plt.title('%s vs. %s' % (arrayString2, arrayString1), fontsize=14)
+    plt.xlabel("%s" % arrayString1, fontsize=12)
+    plt.ylabel("%s" % arrayString2, fontsize=12)
+
+    plt.grid(True)
+    plt.show()
+    
