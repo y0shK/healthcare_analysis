@@ -7,3 +7,11 @@ def create_plt_groups(array1, array2, arrayString1, arrayString2, color):
     plt.grid(True)
     plt.show()
     
+# arrays changed from [age, sex, ...] to [sex, age, ...] for binary to go first
+# make some assumptions for the graphs of each category for integration
+def integrand_x2(x):
+    return x**2 # 1, 3, and 4
+
+def integrand_order_1(x):
+    return -1 * x/(1-x) # 2 and 5
+    
