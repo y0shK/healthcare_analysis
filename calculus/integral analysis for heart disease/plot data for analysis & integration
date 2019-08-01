@@ -9,6 +9,7 @@ for i in range(len(factors)):
     plt.title('Normal plot plot for %s' % factorStrings[i])
     plt.show()
 
+count = 0
 # use a plot with a curve and "trend" histogram, which allows for integration
 for j in range(len(factors)):
     ax = sns.distplot(factors[j], fit_kws={'color': 'red'}, kde=False,
@@ -20,8 +21,21 @@ for j in range(len(factors)):
 
     ax.fill_between(x, y, color='red', alpha=0.3)
 
+    minX = min(x)
+    maxX = max(x)
+
+    if count == 0 or count == 2 or count == 3:
+        area = integrate.quad(integrand_x2, minX, maxX)
+    elif count == 1 or count == 4:
+        try:
+            area = integrate.quad(integrand_order_1, minX, maxX)
+        except ZeroDivisionError:
+            area = "non-continuous function: error"
+    print(area)
+
+    count += 1 # print the right area for the appropriate graph
+
     plt.title('Frequency histogram for %s' % factorStrings[j])
     plt.xlabel('%s' % factorStrings[j])
     plt.ylabel('frequency')
     plt.show()
-    
