@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
+import scipy.integrate as integrate
 
 """
 Goal: use integral calculus to approximate the area
@@ -14,6 +15,8 @@ Documentation/resource links:
 -https://seaborn.pydata.org/generated/seaborn.distplot.html
 -https://matplotlib.org/3.1.1/gallery/recipes/fill_between_alpha.html
 -https://stackoverflow.com/questions/40557910/plt-plot-meaning-of-0-and-1/40558730
+-https://docs.scipy.org/doc/scipy/reference/tutorial/integrate.html
+-http://kitchingroup.cheme.cmu.edu/blog/2013/02/02/Integrating-functions-in-python/
 """
 
 dataLoc = '/home/yash/Desktop/datasets/heart_disease/heart.csv'
