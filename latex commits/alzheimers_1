@@ -1,0 +1,167 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}    
+
+
+%http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf
+%https://stackoverflow.com/questions/3175105/inserting-code-in-this-latex-document-with-indentation
+%https://tex.stackexchange.com/questions/74279/how-to-add-bullets-to-description-lists
+%https://tex.stackexchange.com/questions/153506/insert-a-new-line-without-newline-command
+%https://tex.stackexchange.com/questions/261693/latex-element-of-with-two-strokes-%E2%8B%B9
+%https://tex.stackexchange.com/questions/101918/how-to-use-maths-symbols-in-text-mode
+
+\title{Predicting Alzheimer's}
+\author{Yash Karandikar}
+\date{August 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Big Question}
+\large{How effective are machine learning and statistical algorithms at classifying whether patients will contract Alzheimer’s?}
+
+\section{Abstract}
+Abstract
+
+\section{Intro}
+
+-use Kaggle data set “MRI & Alzheimer’s”, specifically longitudinal study
+
+\section{Machine learning model}
+
+To analyze the problem with machine learning, I used Python with assorted data-analytical packages (namely numpy and pandas) as well as graphical packages (matplotlib and seaborn). The data set I used was entitled "MRI and Alzheimer's," which I obtained off of Kaggle.\newline
+    
+After extracting the data from the .csv file, I fed all of the related factors (such as age and mental state) and metrics (like estimated brain volume and clinical dementia rating) into a neural network with appropriate weights and biases. For instance, age and clinical rating are potential causes of dementia, while mental state and brain volume tend to be products of it.\newline
+    
+In the following code chunks, I:
+\begin{description}
+\large{\item[$\bullet$] find the mean of each array to standardize the sigmoid input}
+\end{description}
+
+\begin{lstlisting}
+df['Age'] = 100 - df['Age'] # age is inversely proportional to remission
+
+# take the mean to standardize the final array and include all of the factors
+ageMean = df['Age'].mean()
+sesMean = df['Socio-economic status'].mean()
+mseMean = df['Mental state examination'].mean()
+estivMean = df['Estimated total intracranial volume'].mean()
+meanArray = [ageMean, sesMean, mseMean, estivMean]
+
+# standardize the sigmoid function accordingly, to return output
+def standardizedSigmoid(x, mean):
+    return x / mean
+\end{lstlisting}
+
+\begin{description}
+\large{\item[$\bullet$] define the neural network and its feed forward function}
+\end{description}
+
+\begin{lstlisting}
+# define neural network
+patientArray = [] # used as global
+
+class HealthcareAnalysis:
+    def __init__(self, weight):
+        self.weight = weight
+
+    def feedForward(self, inputHealth, inputWeights, meanArray):
+        global patientArray
+
+        # iterate through the parameters for health
+        # apply weights with matrix multiplication, not dot product
+        total = 0
+        for i in range(len(inputHealth)):
+            inputHealth[i] = inputHealth[i] * inputWeights[i]
+            total += inputHealth[i]
+
+        # find standardized total, not just raw sum based on weights
+        for i in range(0, 3):
+            standardTotal = standardizedSigmoid(total, meanArray[i])
+
+            for j in range(len(meanArray)):
+                # ensure that output is between 0 and 1
+                if 10 < standardTotal[j] < 100:
+                    standardTotal = standardTotal / 100
+                elif standardTotal[j] > 100:
+                    standardTotal = standardTotal / 1000
+            patientArray = standardTotal
+        return standardTotal
+\end{lstlisting}
+    
+\begin{description}
+\large{\item[$\bullet$] and set up the parameters/instantiate the classes}
+\end{description}
+
+\begin{lstlisting}
+# set up all parameters in master array
+healthArray = np.array([age, socioEconomicStatus, mentalStateExamination,
+                        estimatedTotalIntracranialVolume])
+
+"""
+-set health weights up; age impacts dementia with a positive correlation
+-socioeconomic status can impact treatment, but doesn't fundamentally change the disease
+-deteriorated mental state also has a positive correlation with dementia, more so than age
+-total intracranial volume is a physiological sign of dementia progression, significant
+"""
+
+ageWeight = [1]
+ses = [0.75]
+mse = [1.25]
+estiv = [1.25]
+
+# the weights are somewhat arbitrary, but add precision
+healthWeights = np.array([ageWeight, ses, mse, estiv])
+
+# initialize class instances of neural network
+healthData = HealthcareAnalysis(healthArray)
+healthCalculation = healthData.feedForward(healthArray, healthWeights, meanArray)
+\end{lstlisting}
+
+These lines of code funnel the variables which lead to Alzheimer's into the black-box nature of the neural net, which spits out a value x $\in$ [0, 1] depending on likelihood of the disease.\newline
+    
+%ML model uses a neural network to gauge specific factors given by Kaggle data set (neural networks bring in a variety of factors and squeeze them through input layers, which spit out a classification that we can use to theoretically predict which patients have the disease)
+
+\section{Statistical model}
+
+I also analyzed the problem using statistics. After graphing the data with the variables on the x-axis and the diagnoses on the y-axis (in a similar format to a machine-learning classification problem), I noticed that the data was normally distributed. As a result, I used differing normal models to visualize the problem.
+
+\subsection{probability mass function}
+
+%-statistical model uses probability mass function to perform a binomial distribution, which in turn graphs the normal distribution of normal/demented patients as an almost quadratic-looking function
+
+%-show binomial function graphs + seaborn/matplotlib output
+
+\section{Drawbacks of model}
+
+%-Alzheimer’s is a polygenic disease and there are many more factors than mse, etiv, nWBV, etc. (such as beta-amyloid, etc.) that makes the analysis done here a small part of the whole picture
+%-however, using machine learning model to capture the potential for Alzheimer’s can expand amount of features for relatively small amount of computational complexity
+
+%-show pictures of beta-amyloid, etc. to visually classify different factors
+
+\section{Conclusion}
+
+\end{document}
