@@ -2,6 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{graphicx}
+
+\graphicspath{{home/yash/Downloads/latex/}}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -48,7 +51,7 @@ Abstract
 
 \section{Intro}
 
--use Kaggle data set “MRI & Alzheimer’s”, specifically longitudinal study
+%-use Kaggle data set “MRI & Alzheimer’s”, specifically longitudinal study
 
 \section{Machine learning model}
 
@@ -150,6 +153,26 @@ These lines of code funnel the variables which lead to Alzheimer's into the blac
 I also analyzed the problem using statistics. After graphing the data with the variables on the x-axis and the diagnoses on the y-axis (in a similar format to a machine-learning classification problem), I noticed that the data was normally distributed. As a result, I used differing normal models to visualize the problem.
 
 \subsection{probability mass function}
+
+XXXX<#
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{"age_j"}
+    \caption{probability mass function: age}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{"mse_j"}
+    \caption{probability mass function: mental state evaluation}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{"etiv_j"}
+    \caption{probability mass function: estimated brain volume}
+\end{figure}
 
 %-statistical model uses probability mass function to perform a binomial distribution, which in turn graphs the normal distribution of normal/demented patients as an almost quadratic-looking function
 
