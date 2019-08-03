@@ -40,6 +40,7 @@
 %https://www.overleaf.com/learn/latex/Errors/%60!h'%20float%20specifier%20changed%20to%20%60!ht'
 %https://www.overleaf.com/learn/latex/Questions/How_do_I_insert_an_image_at_a_specific_point_in_the_document%3F
 %https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
+%https://www.alz.org/alzheimers-dementia/what-is-alzheimers
 
 \title{Predicting Alzheimer's}
 \author{Yash Karandikar}
@@ -178,21 +179,21 @@ Figures 2, 3, and 4 use the probability mass function to assess age, mental stat
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{"age_j"}
+    \includegraphics[width=0.65\textwidth]{"age_j"}
     \caption{probability mass function: age}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{"mse_j"}
+    \includegraphics[width=0.65\textwidth]{"mse_j"}
     \caption{probability mass function: mental state evaluation}
 \end{figure}
 
-Notice that the mental state evaluation graph is slightly less dense than the age graph. This is because of the relative discrepancy in how they are normally distributed. Age, in other words, is more normal than mental state.
+Notice that the mental state evaluation graph is slightly less dense than the age graph. This is because of the relative discrepancy in how they are normally distributed. Age, in other words, is more normally distributed than mental state.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{"etiv_j"}
+    \includegraphics[width=0.65\textwidth]{"etiv_j"}
     \caption{probability mass function: estimated brain volume}
 \end{figure}
 
@@ -202,12 +203,14 @@ Estimated total intracranial volume (the aforementioned "etiv" in the graph) is 
 
 %-show binomial function graphs + seaborn/matplotlib output
 
-\section{Drawbacks of model}
+\section{Effectiveness of model}
 
-%-Alzheimer’s is a polygenic disease and there are many more factors than mse, etiv, nWBV, etc. (such as beta-amyloid, etc.) that makes the analysis done here a small part of the whole picture
-%-however, using machine learning model to capture the potential for Alzheimer’s can expand amount of features for relatively small amount of computational complexity
+\section{Analysis}
+Though the approach of using machine learning algorithms and statistical concepts is relatively effective, it simply doesn't possess the scope necessary to tackle Alzheimer's diagnosis at a more broad level. My model takes certain important factors into account (such as age and socio-economic status) as well as potential implications of diagnosis (like brain volume and mental state) which are good predictors post-hoc of having contracted Alzheimer's.\newline
 
-%-show pictures of beta-amyloid, etc. to visually classify different factors
+However, there are many more factors which are harder to statistically gather or quantify. For instance, suppose a person susceptible to Alzheimer's has multiple concussions at a young age. That person is higher at risk for Alzheimer's or other neurological diseases, but modern-day statistics simply don't possess the complexity needed to take that into account when using similar analysis as I have performed. Concussion rate, genetics and general health/exercise/diet are equally important factors, to name a few. There are also many other potential predictors of Alzheimer's like beta-amyloid in the system and buildup of tau inside cells, among others.\newline
+
+Though the sheer amount of complexity that biology and neurology afford the human body is immense, the computational power at our disposal is only increasing. Machine learning (similar analysis to Section 3, but on a much grander scale and with far superior algorithmic processing) is a promising field to break down these diseases, because machines can much more easily handle the massive loads of data that human doctors cannot. In addition, the optimization of algorithms and heuristics to save time tend to proportionally increase more than the relative costs (whether financial, logistical, or computational), which is heartening for those seeking a cure.
 
 \section{Conclusion}
 
