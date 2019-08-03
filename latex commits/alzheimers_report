@@ -4,6 +4,8 @@
 \usepackage{color}
 \usepackage{graphicx}
 
+\usepackage{float}
+
 \graphicspath{{home/yash/Downloads/latex/}}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -34,6 +36,10 @@
 %https://tex.stackexchange.com/questions/153506/insert-a-new-line-without-newline-command
 %https://tex.stackexchange.com/questions/261693/latex-element-of-with-two-strokes-%E2%8B%B9
 %https://tex.stackexchange.com/questions/101918/how-to-use-maths-symbols-in-text-mode
+%https://en.wikipedia.org/wiki/Probability_mass_function
+%https://www.overleaf.com/learn/latex/Errors/%60!h'%20float%20specifier%20changed%20to%20%60!ht'
+%https://www.overleaf.com/learn/latex/Questions/How_do_I_insert_an_image_at_a_specific_point_in_the_document%3F
+%https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
 
 \title{Predicting Alzheimer's}
 \author{Yash Karandikar}
@@ -55,7 +61,7 @@ Abstract
 
 \section{Machine learning model}
 
-To analyze the problem with machine learning, I used Python with assorted data-analytical packages (namely numpy and pandas) as well as graphical packages (matplotlib and seaborn). The data set I used was entitled "MRI and Alzheimer's," which I obtained off of Kaggle.\newline
+To analyze the problem with machine learning, I used Python with assorted data-analytical packages (namely numpy and pandas) as well as graphical packages (matplotlib and seaborn). The Kaggle data set I used is entitled "MRI and Alzheimer's."\newline
     
 After extracting the data from the .csv file, I fed all of the related factors (such as age and mental state) and metrics (like estimated brain volume and clinical dementia rating) into a neural network with appropriate weights and biases. For instance, age and clinical rating are potential causes of dementia, while mental state and brain volume tend to be products of it.\newline
     
@@ -116,7 +122,7 @@ class HealthcareAnalysis:
 \end{lstlisting}
     
 \begin{description}
-\large{\item[$\bullet$] and set up the parameters/instantiate the classes}
+\large{\item[$\bullet$] and activate the neural network for its output}
 \end{description}
 
 \begin{lstlisting}
@@ -144,7 +150,7 @@ healthData = HealthcareAnalysis(healthArray)
 healthCalculation = healthData.feedForward(healthArray, healthWeights, meanArray)
 \end{lstlisting}
 
-These lines of code funnel the variables which lead to Alzheimer's into the black-box nature of the neural net, which spits out a value x $\in$ [0, 1] depending on likelihood of the disease.\newline
+These lines of code funnel the variables which lead to Alzheimer's into the black-box nature of the neural net, which spits out a value x $\in$ [0, 1] depending on likelihood of the disease.
     
 %ML model uses a neural network to gauge specific factors given by Kaggle data set (neural networks bring in a variety of factors and squeeze them through input layers, which spit out a classification that we can use to theoretically predict which patients have the disease)
 
@@ -152,27 +158,45 @@ These lines of code funnel the variables which lead to Alzheimer's into the blac
 
 I also analyzed the problem using statistics. After graphing the data with the variables on the x-axis and the diagnoses on the y-axis (in a similar format to a machine-learning classification problem), I noticed that the data was normally distributed. As a result, I used differing normal models to visualize the problem.
 
-\subsection{probability mass function}
+\subsection{Normal probability plot}
+It is worth noting the utility of normal probability plots, which reveal to what extent the data is normally distributed through the graph's linearity. Probability plots have the "theoretical quantities" on the x-axis (which are the abstract numbers from mathematical assumptions) and the "sample quantities" on the y-axis (which are the empirical data used in the experiment).\newline
 
-XXXX<#
+Probability plots are useful when one wants to find out what model would best fit the data. There are many options available for normal distributions (such as t-distributions) as well as scaling options (like using z-scores) that make probability plots useful for initial analysis.\newline
 
-\begin{figure}
+Figure 1 is an example of a normal probability plot which uses the data set of estimated brain volume for patients. Because the line is so straight, it is implied that brain volume is normally distributed. This observation is consistent with the data, since some patients will have lesser volume (associated with Alzheimer's) and some will have greater volume (associated with remission or simply not having the disease).
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{"age_j"}
+    \includegraphics[width=0.5\textwidth]{"prob_plot_etiv"}
+    \caption{example of probability plot}
+\end{figure}
+
+\subsection{Probability mass function}
+The probability mass function (for normally distributed data) graphs the element on the x-axis and the probability of the element occurring on the y-axis. It somewhat resembles parabolic motion, and the integral from the lower to upper bound always equals 1. This is due to the property that any given element is binary (i.e. occurs or doesn't), so all values' probabilities given mutual exclusion happen independently of each other and guarantee all total possibilities.\newline
+
+Figures 2, 3, and 4 use the probability mass function to assess age, mental state, and brain volume. As the data becomes increasingly normally distributed, the data points get closer and y-value distances get smaller proportionately.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{"age_j"}
     \caption{probability mass function: age}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{"mse_j"}
+    \includegraphics[width=0.5\textwidth]{"mse_j"}
     \caption{probability mass function: mental state evaluation}
 \end{figure}
 
-\begin{figure}
+Notice that the mental state evaluation graph is slightly less dense than the age graph. This is because of the relative discrepancy in how they are normally distributed. Age, in other words, is more normal than mental state.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{"etiv_j"}
+    \includegraphics[width=0.5\textwidth]{"etiv_j"}
     \caption{probability mass function: estimated brain volume}
 \end{figure}
+
+Estimated total intracranial volume (the aforementioned "etiv" in the graph) is incredibly normally distributed, which explains the density of the probability mass function. This is expected behavior because the data set is a mixed bag of patients with and without Alzheimer's, rounded out by those for whom the disease went into remission.
 
 %-statistical model uses probability mass function to perform a binomial distribution, which in turn graphs the normal distribution of normal/demented patients as an almost quadratic-looking function
 
