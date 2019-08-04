@@ -16,3 +16,8 @@ create_plt_groups('Age', 'red', df)
 create_plt_groups('Socio-economic status', 'blue', df)
 create_plt_groups('Mental state examination', 'green', df)
 create_plt_groups('Estimated total intracranial volume', 'black', df)
+
+computeMseSum('Age', df)
+computeMseSum('Socio-economic status', df)
+computeMseSum('Mental state examination', df)
+computeMseSum('Estimated total intracranial volume', df)
