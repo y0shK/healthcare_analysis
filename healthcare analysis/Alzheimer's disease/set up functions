@@ -8,8 +8,7 @@ def convertToIntegers(array):
         array[i] = int(array[i])
 
 def sigmoid(x):
-    # need 2 in numerator because demented == 2
-    return 2/(1+np.exp(-x))
+    return 1/(1+np.exp(-x))
 
 mseSum = 0
 def create_plt_groups(string, color, df):
@@ -21,26 +20,33 @@ def create_plt_groups(string, color, df):
     max = df['%s' %string].max()
     min = df['%s' %string].min()
 
-    x = np.arange(-1 * min, max, 1)
-    sig = sigmoid(x)
+    range = np.arange(-1 * min, max, 1)
+    sig = sigmoid(range)
     plt.plot(sig)
+    plt.grid(True)
+    plt.show()
+
+def computeMseSum(string, df):
+    max = df['%s' % string].max()
+    min = df['%s' % string].min()
+
+    x = np.arange(min, max, 1)
+    sig = sigmoid(x)
 
     # perform mseSum variant on logistic fit to see how closely each variable affects the classification
     global mseSum # re-initialize value to 0 every time the method is called
 
     # this process results in a matrix because df['Group'] feeds in values in arrays, so the output is an array
-    for i in range(-1 * min, max):
-        mse = np.abs([sig[i] - df['Group']]) # math.abs(logistic "trend line" - actual value) for all values
-        mseSum += mse
+    for i in range(len(x)):
+        mseNew = np.abs([sig[i] - df['Group']]) # math.abs(logistic "trend line" - actual value) for all values
+        mseSum += mseNew
     print("Error matrix: %s" % mseSum)
 
     # this process results in a single number, because the matrix's elements are added, not the matrix itself
     mseMatrixSum = 0
     for i in range(len(mseSum)):
         mseMatrixSum += mseSum[i][0] # i is each row, 0 is each column (i.e. going through all elements)
-    mseMatrixMean = mseMatrixSum / len(mseSum)
+    mseMatrixMean = mseMatrixSum / (len(x) * 10) # multiply by 10 so mseMatrixMean is between 0 and 1
     print("Mean of the matrix, or the error: %s" % mseMatrixMean)
-
-    plt.grid(True)
-    plt.show()
+    print("\n")
     
