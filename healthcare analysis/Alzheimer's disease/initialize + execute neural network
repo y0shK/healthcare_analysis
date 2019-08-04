@@ -21,6 +21,9 @@ healthWeights = np.array([ageWeight, ses, mse, estiv])
 healthData = HealthcareAnalysis(healthArray)
 healthCalculation = healthData.feedForward(healthArray, healthWeights, meanArray)
 
-# output of 1 implies best outcome of remission
+# prints the likelihood, from 0 to 1, of each patient getting the disease
+# output of 1 implies worst outcome of having the disease
 print("\nArray of patients, with domain [0,1]: ")
 print(patientArray)
+print("\n"Actual array of patients from the Kaggle set: ")
+print(group)
