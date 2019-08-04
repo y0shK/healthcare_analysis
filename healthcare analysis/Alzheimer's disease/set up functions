@@ -40,13 +40,14 @@ def computeMseSum(string, df):
     for i in range(len(x)):
         mseNew = np.abs([sig[i] - df['Group']]) # math.abs(logistic "trend line" - actual value) for all values
         mseSum += mseNew
-    print("Error matrix: %s" % mseSum)
+    print("Error matrix for %s: %s" % (string.lower(), mseSum))
 
     # this process results in a single number, because the matrix's elements are added, not the matrix itself
     mseMatrixSum = 0
     for i in range(len(mseSum)):
         mseMatrixSum += mseSum[i][0] # i is each row, 0 is each column (i.e. going through all elements)
     mseMatrixMean = mseMatrixSum / (len(x) * 10) # multiply by 10 so mseMatrixMean is between 0 and 1
-    print("Mean of the matrix, or the error: %s" % mseMatrixMean)
+    
+    print("Mean of the matrix for %s, or the error: %s" % (string.lower(), mseMatrixMean))
     print("\n")
     
