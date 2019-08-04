@@ -2,9 +2,8 @@
 -to ensure that the neural network accurately predicts Alzheimer's,
     we check all of the factors and divide by the mean to standardize
     the final array with a domain of [0, 1]
--0 -> patient with dementia, 1 -> fully converted/non-demented
+-0 -> patient without dementia/converted, 1 has dementia
 """
-df['Age'] = 100 - df['Age'] # age is inversely proportional to remission
 
 # take the mean to standardize the final array and include all of the factors
 ageMean = df['Age'].mean()
