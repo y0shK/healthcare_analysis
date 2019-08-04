@@ -19,9 +19,9 @@ for element in range(len(group)):
     if group[element] == "Nondemented":
         group[element] = 0
     elif group[element] == "Converted":
-        group[element] = 1
+        group[element] = 0.5
     elif group[element] == "Demented":
-        group[element] = 2
+        group[element] = 1
 
 convertToIntegers(age)
 convertToIntegers(socioEconomicStatus)
