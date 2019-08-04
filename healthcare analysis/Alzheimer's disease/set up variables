@@ -2,7 +2,6 @@ import csv
 import pandas
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LogisticRegression
 
 longitudinal = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
 
@@ -13,6 +12,9 @@ links for reference:
 -https://stackoverflow.com/questions/10894323/what-does-the-c-underscore-expression-c-do-exactly
 -https://www.geeksforgeeks.org/numpy-ones-python/
 -http://www.datasciencemadesimple.com/get-minimum-value-column-python-pandas/
+-https://stackoverflow.com/questions/36921951/truth-value-of-a-series-is-ambiguous-use-a-empty-a-bool-a-item-a-any-o
+-https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html
+-https://stackoverflow.com/questions/17470883/rounding-to-two-decimal-places-in-python-2-7
 """
 
 # independent variables
@@ -26,5 +28,4 @@ group = []
 
 # put variables in array to iterate through & clean up
 variables = [age, socioEconomicStatus, mentalStateExamination,
-             estimatedTotalIntracranialVolume, group]
-             
+             estimatedTotalIntracranialVolume, group]             
