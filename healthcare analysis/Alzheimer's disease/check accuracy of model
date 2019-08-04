@@ -1,0 +1,27 @@
+checkAccuracyArray = []
+correctVal = 0
+incorrectVal = 0
+
+# non-demented is 0, demented is 1
+for i in range(len(patientArray)):
+    if patientArray[i] > 0.5 and group[i] == 1:
+        correct = True
+        correctVal += 1
+    elif patientArray[i] < 0.5 and group[i] == 0:
+        correct = True
+        correctVal += 1
+    elif patientArray[i] == 0.5 and group[i] == 0.5: # not a single patient was converted
+        correct = True
+        correctVal += 1
+    else:
+        correct = False
+        incorrectVal += 1
+    checkAccuracyArray.append(correct)
+
+print(checkAccuracyArray)
+print('Number correct: %s' % correctVal)
+print('Number incorrect: %s' % incorrectVal)
+
+decimal = correctVal / (correctVal + incorrectVal)
+percent = round(decimal * 100)
+print("The model was %s%% correct." % percent)
