@@ -8,6 +8,9 @@
 \usepackage{sidecap}
 \usepackage{hyperref}
 
+%\usepackage{lipsum}
+%\usepackage[doublespacing]{setspace}
+
 \graphicspath{{home/yash/Downloads/latex/}}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -40,19 +43,37 @@
 \maketitle
 
 \section{Big Question}
-\large{How effective are machine learning and statistical algorithms at classifying whether patients will contract Alzheimer’s?}
+How effective are machine learning and statistical algorithms in classifying whether patients will contract Alzheimer’s?
 
 \section{Abstract}
-Abstract
+Probability of correctly predicting whether patients would contract Alzheimer's given age, socioeconomic status (SES), mental state, and brain volume from the Kaggle sample "MRI and Alzheimer's" by using a neural network, US 2019
 
-\section{Intro}
-Intro
+\subsection{Background}
+Machine learning algorithms are gaining great traction in healthcare due to their ability to analyze big data. This data-analytic study examines how a neural network will absorb relatively lesser data to correctly classify patients as with or without Alzheimer's. The study uses certain variables to predict Alzheimer's and checks the results against the real data set.
 
-\section{Machine learning model}
-The data set I used for this project is entitled "MRI and Alzheimer's," which I obtained from Kaggle. Broadly speaking, I used both graphical and analytical approaches towards the data to analyze the problem with machine learning. Relevant code chunks are placed in their subsection with explanations below.
+\subsection{Methodology}
+I programmed a neural network in Python which accepted data sets from Kaggle of Alzheimer's patients (aged 60-96, n=373) and output a chunk of data with each individual patient's probability to contract the disease. I also plotted the data set on a probability plot and normal curve for age, SES, mental state, and brain volume (n=4), all of which were normally distributed.
+
+\subsection{Results}
+The network correctly predicted the patient's status 39\% of the time.
+
+\subsection{Conclusions}
+The neural network model I used was too ineffective to be useful in clinical care, but it posed interesting questions about how to better structure machine learning models for healthcare. For instance, I used too few variables and made too many assumptions for computational simplicity, which created many false negatives. I learned that neural networks must be able to absorb complexity (in both data and scope) in order to develop the biological nuance necessary to be used in medical care.
+
+\section{Introduction}
+Machine learning and statistics are fields which are often considered independently of healthcare, but they have great potential to be used within healthcare simply to parse through big chunks of data in a way that human doctors simply cannot. To apply them to healthcare, I constructed a neural network model to predict whether patients in an Alzheimer's data set were demented or non-demented, which I supplemented with statistical plots and distributions to confirm the uniformity of the model. I used Python to build these models and test the effectiveness of my classification.
+
+\section{Neural network model}
+The data set I used for this project is entitled "MRI and Alzheimer's," which I obtained from Kaggle. It contains a data set of patients aged 60-96 (n=373), from which I used age, socioeconomic status (SES), mental state, and brain volume (n=4 variables).\newline
+
+\setlength{\footnotesep}{0.75cm}
+
+Broadly speaking, I used both graphical and analytical approaches towards the data to analyze the problem with machine learning before funneling the analyzed data into a neural network for processing.\footnote{The cumulative code for the neural network: \url{https://github.com/y0shK/healthcare_analysis/tree/master/healthcare\%20analysis/Alzheimer's\%20disease}} This code was supplemented by statistical modeling\footnote{The cumulative code for the statistical models: \url{https://github.com/y0shK/healthcare_analysis/tree/master/statistics/probability\%20mass\%20function}} (which verified the normal distribution of the data) and a check against the actual data set.\newline
+
+Relevant code chunks are placed in their subsections with explanations below.\newpage
 
 \subsection{Graphical analysis}
-The graphical approach used matplotlib (a graphical package) to visually display the data on a scatterplot as well as a sigmoid "trend line" to find the error between the actual data and the plotted sigmoid function. I placed each factor (such as age and mental state) and metric (like estimated brain volume and clinical dementia rating) on each x-axis and the cumulative diagnoses on each y-axis.
+The graphical approach used matplotlib (a graphical package) to visually display the data on a scatterplot in order to contrast it with a sigmoid "trend line." With these graphical tools, I could find the error between the theoretical and expected binary values. I placed each factor (such as age and mental state) and metric (like estimated brain volume and clinical dementia rating) on each x-axis and the cumulative diagnoses (all values $\in$ [0, 1], where 0 is the absence and 1 is the presence of disease) on each y-axis.
 
 \begin{lstlisting}
 def sigmoid(x):
@@ -81,7 +102,7 @@ create_plt_groups('Estimated total intracranial volume', 'black', df)
 \end{lstlisting}
 
 \subsection{Numerical analysis}
-The analytical approach segued into adding up the aforementioned error to find an "error matrix" for each variable I analyzed to estimate the likelihood of contracting Alzheimer's from that variable for each patient.
+The analytical approach segued into adding up the aforementioned error to find an "error matrix" of each variable for each patient. Using the matrix, I analyzed the individual probabilities of any one patient contracting Alzheimer's.
 
 \begin{lstlisting}
 def computeMseSum(string, df):
@@ -115,7 +136,7 @@ computeMseSum('Estimated total intracranial volume', df)
 \end{lstlisting}
 
 \subsection{Using a neural network}
-After extracting and processing that data, I then funneled the data matrix for each variable into a neural network with appropriate weights and biases.  For instance, age and clinical rating are potential causes of dementia, while mental state and brain volume tend to be products of it. With those adjustments, the network performed some internal computations and printed an array (with each number in the array between 0 and 1) with the likelihood for each individual for getting Alzheimer's.\newline
+After extracting and processing that data, I funneled the data matrix for each variable into a neural network with its appropriate weights and biases. For instance, age and clinical rating are potential causes of Alzheimer's, while mental state and brain volume tend to be products of it. With those adjustments, the network performed some internal computations and printed an array (with each number in the array between 0 and 1) representing each individual's likelihood to get Alzheimer's.\newline
 
 The following steps break the process down:
 \begin{description}
@@ -214,7 +235,7 @@ healthCalculation = healthData.feedForward(healthArray, healthWeights, meanArray
 \end{lstlisting}
 
 \subsection{Results}
-Finally, I checked the neural network's output against the actual data to verify the accuracy of the model. These lines of code output a value x $\in$ [0, 1] depending on likelihood of the disease, where 0 completely lacks the disease and 1 fully has it.
+Finally, I checked the neural network's output against the actual data to verify the accuracy of the model. These lines of code output a value x $\in$ [0, 1] depending on likelihood of the disease.
 
 \begin{lstlisting}
 # prints the likelihood, from 0 to 1, of each patient getting the disease
@@ -253,7 +274,7 @@ percent = round(decimal * 100)
 print("The model was %s%% correct." % percent)
 \end{lstlisting}
     
-Here is the output of the neural network in PyCharm's console. I redacted each raw array of data because it's too big to fit in a paper.
+Here is the output of the neural network in PyCharm's console. I redacted each raw array of data because it's too big to fit.
 \begin{lstlisting}
 Mean of the matrix for age, or the error: 0.1
 Mean of the matrix for socio-economic status, or the error: 0.8409288714693646
@@ -263,17 +284,17 @@ Mean of the matrix for estimated total intracranial volume, or the error: 0.1079
 Number correct: 146
 Number incorrect: 227
 Percentage of the model's correct guesses: 39%
-\end{lstlisting}
+\end{lstlisting}\newpage
 
 \section{Statistical model}
-I also analyzed the problem using statistics. After graphing the data with the variables on the x-axis and the diagnoses on the y-axis (in a similar format to a machine-learning classification problem), I noticed that the data was normally distributed. As a result, I used differing normal models to visualize the problem.
+I also analyzed the problem using statistical methods to check for patterns in the data. After graphing the variables on the x-axis and the diagnoses on the y-axis (in a similar format to a machine-learning classification problem), I noticed that the data was normally distributed. As a result, I used differing normal models to visualize the problem and ultimately find the error.
 
 \subsection{Normal probability plot}
-It is worth noting the utility of normal probability plots, which reveal to what extent the data is normally distributed through the graph's linearity. Probability plots have the "theoretical quantities" on the x-axis (which are the abstract numbers from mathematical assumptions) and the "sample quantities" on the y-axis (which are the empirical data used in the experiment).\newline
+It is worth noting the utility of normal probability plots, which reveal to what extent the data is actually normally distributed through the graph's linearity. Probability plots have the "theoretical quantities" on the x-axis (which are the abstract numbers from mathematical assumptions) and the "sample quantities" on the y-axis (which are the empirical data used in the experiment).\newline
 
 Probability plots are useful when one wants to find out what model would best fit the data. There are many options available for normal distributions (such as t-distributions) as well as scaling options (like using z-scores) that make probability plots useful for initial analysis.\newline
 
-Figure 1 is an example of a normal probability plot which uses the data set of estimated brain volume for patients. Because the line is so straight, it is implied that brain volume is normally distributed. This observation is consistent with the data, since some patients will have lesser volume (associated with Alzheimer's) and some will have greater volume (associated with remission or simply not having the disease).
+Figure 1 is an example of a normal probability plot which uses the data set of estimated brain volume for patients. Because the line is so straight, it is implied that brain volume is normally distributed. This observation is consistent with the data, since some patients will have lesser volume (associated with Alzheimer's) and some will have greater volume (associated with remission or simply not having the disease at all).
 
 \begin{figure}[H]
     \centering
@@ -282,7 +303,7 @@ Figure 1 is an example of a normal probability plot which uses the data set of e
 \end{figure}
 
 \subsection{Probability mass function}
-The probability mass function (for normally distributed data) graphs the element on the x-axis and the probability of the element occurring on the y-axis. It somewhat resembles parabolic motion, and the integral from the lower to upper bound always equals 1. This is due to the property that any given element is binary (i.e. occurs or doesn't), so all values' probabilities given mutual exclusion happen independently of each other and guarantee all total possibilities.\newline
+The probability mass function, or pmf, graphs the element on the x-axis and the probability of the element occurring on the y-axis (again for x $\in$ [0, 1]). The function somewhat resembles a parabola because it is normally distributed. A useful result of the pmf is that it visually rather than numerically gives the percentages of any one outcome, because the area under the curve always equals 1. In probability, 1 is the total sum of all possible events, mirroring what we see on the graph.\newline
 
 Figures 2, 3, and 4 use the probability mass function to assess age, mental state, and brain volume. As the data becomes increasingly normally distributed, the data points get closer and y-value distances get smaller proportionately.
 
@@ -298,7 +319,7 @@ Figures 2, 3, and 4 use the probability mass function to assess age, mental stat
     \caption{probability mass function: mental state evaluation}
 \end{figure}
 
-Notice that the mental state evaluation graph is slightly less dense than the age graph. This is because of the relative discrepancy in how they are normally distributed. Age, in other words, is more normally distributed than mental state.
+Notice that the mental state evaluation graph is slightly less dense than the age graph because of the relative discrepancy in their normal distributions. Age, in other words, is more normally distributed for Alzheimer's patients than mental state. This finding makes quantitative sense, because Alzheimer's inflicts patients with a range of ages, but mental state for almost all patients tends to deteriorate.
 
 \begin{figure}[H]
     \centering
@@ -306,16 +327,16 @@ Notice that the mental state evaluation graph is slightly less dense than the ag
     \caption{probability mass function: estimated brain volume}
 \end{figure}
 
-Estimated total intracranial volume (the aforementioned "etiv" in the graph) is incredibly normally distributed, which explains the density of the probability mass function. This is expected behavior because the data set is a mixed bag of patients with and without Alzheimer's, rounded out by those for whom the disease went into remission.\newline
+Estimated total intracranial volume (or brain volume) in the graph is incredibly normally distributed, which explains the density of the probability mass function. This is expected behavior because the data set is a mixed bag of patients with and without Alzheimer's, rounded out by those for whom the disease went into remission. Since we have such a variety of patients, the graph reveals a very normal trend.\newline
 
-In general, applying statistical concepts (like checking the spread of the data with a normal probability plot or applying patient data to a normal distribution) can usefully complement more quantitative approaches like machine learning. Often, simply seeing the data can reveal trends that lead to further investigation and realization. In this project, the use of statistics helped me see trends between each factor I analyzed - be it demographically, psychologically, or biologically - and from those trends I could appropriately plan the weights and biases for the neural network. Contributions like those are what make statistics so useful and so applicable to more quantitative analysis.
+In general, applying statistical concepts (like checking the spread of the data with a normal probability plot or applying patient data to a normal distribution) can usefully complement more quantitative approaches like machine learning. Often, simply seeing the data can reveal trends that lead to further investigation and realization. In this project, the use of statistics helped me see trends between each factor I analyzed - be it demographically, psychologically, or biologically - and from those trends I could appropriately plan the weights and biases for the neural network. Contributions like those are what make statistics so useful and so applicable.
 
 \section{Effectiveness of model}
-Though my machine learning model accommodated different types of variables for a more well-rounded analysis, it wasn't effective enough for clinical use. When I plugged in age, socio-economic status, mental state, and brain volume, the model correctly diagnosed the patient about 40\% of the time.\newline
+Though my machine learning model accommodated different types of variables for a more well-rounded analysis, it wasn't effective enough for clinical use. When I plugged in age, socioeconomic status, mental state, and brain volume, the model correctly diagnosed the patient 39\% of the time.\newline
 
 Suspected causes for error are:\newline
 
-limited scope/size of my data
+the limited scope/size of my data
 
 \begin{description}
 \item[$\bullet$] I only used four variables
@@ -325,13 +346,13 @@ limited scope/size of my data
 \item[$\bullet$] my test set was 373 patients, a relatively small amount to teach the network
 \end{description}
 
-possible experimental flaw in the methodology
+the possible experimental flaw in the methodology
 
 \begin{description}
 \item[$\bullet$] using a sigmoid may not yield the graphical error as nicely as a linear function
 \end{description}
 
-simple models which traded accuracy for concision
+and simple models which traded accuracy for concision
 
 \begin{description}
 \item[$\bullet$] the neural network only has a feed-forward function, with no back-propagation
@@ -344,9 +365,9 @@ simple models which traded accuracy for concision
 Even with many sources of error, I learned a lot from this experiment! The programming aspect was edifying both in terms of applying algorithms in the real world (where I had to make some concessions of mathematical purity for the data to be sensible) and in learning the factors that contribute to developing Alzheimer's. The statistical aspect was useful in grounding the trends I saw in the data and using my medical knowledge of Alzheimer's to improve my model overall. Though my model is not extremely effective, the information I gained through testing various factors and models solidified my understanding of medical and scientific fields alike.
 
 \section{Analysis}
-Though the approach of using machine learning algorithms and statistical concepts has promise, it simply doesn't possess the scope necessary to tackle Alzheimer's diagnosis at a more broad level. As of the present moment, it is effective enough to classify and predict an abstract version of Alzheimer's free from more biological and epi-genetic factors. My model takes certain important factors into account (such as age and socio-economic status) as well as potential implications of diagnosis (like brain volume and mental state) which are good predictors post-hoc of having contracted Alzheimer's. However, the task of predicting Alzheimer's without the post-hoc data is more tricky.\newline
+The approach of using machine learning algorithms and statistical concepts has promise, but it simply doesn't possess the scope necessary to tackle Alzheimer's diagnosis at a more broad and deep level. At the present moment, it is effective enough to classify and predict an abstract version of Alzheimer's free from organic and messy epigenetic factors. My model takes certain important factors into account (such as age and socioeconomic status) as well as potential implications of diagnosis (like brain volume and mental state) which are good predictors of having contracted Alzheimer's, but predicting Alzheimer's without data obtained after the disease sets in is more tricky.\newline
 
-In addition, there are many more factors which are harder to statistically gather or quantify. For instance, suppose a person susceptible to Alzheimer's has multiple concussions at a young age. 
+In addition, there are many more factors which are harder to statistically gather or quantify. For instance, suppose a person susceptible to Alzheimer's (for whatever biological or genetic reason) has one or even multiple concussions at a young age. 
 
 \begin{SCfigure}[][h]
   \centering
@@ -354,9 +375,9 @@ In addition, there are many more factors which are harder to statistically gathe
   \includegraphics[width=0.6\textwidth]{cte-vs-ad}
 \end{SCfigure}
 
-That person is higher at risk for CTE or even Alzheimer's, but modern-day statistics simply don't possess the complexity needed to take such small - but ultimately impactful - variables into account. Concussion rate, genetics and general health/exercise/diet are equally important factors, to name a few, which could potentially predict Alzheimer's just as well as conventional metrics. There are also many other potential predictors of Alzheimer's like beta-amyloid in the system and buildup of tau inside cells, among others, all of which are harder to quantifiably measure and qualitatively declare as signs of cognitive decline.\newline
+That person is higher at risk for CTE or even Alzheimer's, but modern-day statistics simply don't possess the complexity needed to take such small - but ultimately impactful - variables into account. Concussion rate, genetics and general health/exercise/diet are equally important factors, to name a few, which could potentially predict Alzheimer's just as well as conventional metrics like demographics. There are also many other purely biological predictors of Alzheimer's like beta-amyloid in the system and buildup of tau inside cells, among others, all of which are harder to make quantifiable as signs of cognitive decline.\newline
 
-On the positive side, though the sheer amount of complexity that biology and neurology afford the human body is immense the computational power at our disposal is only increasing. Machine learning (with similar analysis to Section 3, but on a much grander scale and with far superior algorithmic processing) is a promising field to break down these diseases, because machines can much more easily handle the massive loads of data that human doctors cannot. 
+On the positive side, though the sheer amount of complexity that biology and neurology afford the human body is immense, the computational power at our disposal is only increasing. Machine learning (with similar analysis to Section 3, but on a much grander scale and with far superior algorithmic processing) is a promising field to break down these diseases, because machines can much more easily handle the massive loads of data that human doctors cannot. 
 
 \begin{SCfigure}[][h]
   \centering
@@ -364,13 +385,16 @@ On the positive side, though the sheer amount of complexity that biology and neu
   \includegraphics[width=0.7\textwidth]{nn_model}
 \end{SCfigure}
 
-The optimization of algorithms and heuristics to save time tend to proportionally increase more than the relative costs (whether financial, logistical, or computational), heartening for further progress.\newline
+The optimization of algorithms and heuristics to save time also tend to proportionally increase more than the relative costs (whether financial, logistical, or computational), a sign of technological progress heartening for improving healthcare.\newline
 
 \section{Conclusion}
 It was not a perfect application of theory to medical care, but the process of using machine learning and statistical concepts to classify Alzheimer's patients was reasonably effective given the small scope of data, algorithmic simplicity, and post-disease knowledge I had. Clinically, the data to plug into algorithms like neural networks drastically shrinks (because we want to predict Alzheimer's and counteract it rather than concluding in theory what is neurologically evident in practice), but with more computationally complex models and more precise algorithms it is entirely foreseeable to apply these computer science concepts. Though there is a tremendous amount of room to sharpen the model and better portray the model's correlations statistically, these fields in medical care are non-trivially effective and absolutely exciting to further pursue.
 
 \section{References}
 Here are the links I viewed in writing this paper. Though all the code and analysis is mine, I referenced and used the following.
+
+\subsection{Data set}
+\url{https://www.kaggle.com/jboysen/mri-and-alzheimers}
 
 \subsection{LaTeX documentation}
 \url{http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf}
@@ -382,6 +406,9 @@ Here are the links I viewed in writing this paper. Though all the code and analy
 \url{https://tex.stackexchange.com/questions/339191/is-it-possible-to-write-the-symbol-in-text-in-latex}
 \url{https://tex.stackexchange.com/questions/153388/how-do-i-make-the-figure-float-h-here-when-i-use-scfigure}
 \url{https://stackoverflow.com/questions/2894710/how-to-write-urls-in-latex}
+\url{https://tex.stackexchange.com/questions/160058/how-to-make-url-in-footnote-clickable}
+\url{https://academia.stackexchange.com/questions/20358/how-should-i-reference-my-github-repository-with-materials-for-my-paper}
+\url{https://stackoverflow.com/questions/783716/footnote-spacing-in-latex}
 \url{https://www.overleaf.com/learn/latex/Errors/\%60!h'\%20float\%20specifier\%20changed\%20to\%20\%60!ht'}\newline
 \url{https://www.overleaf.com/learn/latex/Questions/How_do_I_insert_an_image_at_a_specific_point_in_the_document\%3F}\newline
 \url{https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
@@ -389,6 +416,8 @@ Here are the links I viewed in writing this paper. Though all the code and analy
 \subsection{Conceptual information}
 \url{https://www.alz.org/alzheimers-dementia/what-is-alzheimers}
 \url{https://www.alz.org/alzheimers-dementia/what-is-dementia/related_conditions/chronic-traumatic-encephalopathy-(cte)}
+\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3136027/}
+\url{https://www.cdc.gov/stdconference/2016/how-to-write-an-abstract_v3.pdf}
 
 \subsection{Images}
 \url{https://directorsblog.nih.gov/2015/04/21/brain-imaging-tackling-chronic-traumatic-encephalopathy}
