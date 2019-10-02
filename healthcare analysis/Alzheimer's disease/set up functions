@@ -51,3 +51,42 @@ def computeMseSum(string, df):
     print("Mean of the matrix for %s, or the error: %s" % (string.lower(), mseMatrixMean))
     print("\n")
     
+# create random numbers, appends them, checks them against Alzheimers' patients
+def randIntGen(array):
+    # use function.variable = variable to emphasize that function value is the real value
+    randIntGen.randArray = []
+    randIntGen.randBoolArray = []
+    randIntGen.randCorrectNum = 0
+    randIntGen.randIncorrectNum = 0
+
+    # use global to instantiate variables
+    global randArray
+    global randBoolArray
+    global randCorrectNum
+    global randIncorrectNum
+
+    # re-define variables using local counterparts; these are globally used
+    randArray = randIntGen.randArray
+    randBoolArray = randIntGen.randBoolArray
+    randCorrectNum = randIntGen.randCorrectNum
+    randIncorrectNum = randIntGen.randIncorrectNum
+
+    for i in range(len(array)):
+        randInt = random.randint(0, 2)  # 0 lacks disease, 1 is remission, 2 has disease
+
+        # divide randInt by 2 to fit Alzheimer's predictions
+        randInt = randInt / 2
+        randArray.append(randInt)
+
+    # check for whether randomness is actually accurate
+    for j in range(len(array)):
+        if randArray[j] == array[j]:
+            randCorrect = True
+            randCorrectNum += 1
+        elif randArray[j] != group[j]:
+            randCorrect = False
+            randIncorrectNum += 1
+        randBoolArray.append(randCorrect)
+
+    return randArray, randCorrect, randCorrectNum, randIncorrectNum
+    
