@@ -25,3 +25,29 @@ print('Number incorrect: %s' % incorrectVal)
 decimal = correctVal / (correctVal + incorrectVal)
 percent = round(decimal * 100)
 print("The model was %s%% correct." % percent)
+
+percentRandArray = []
+for i in range(len(randBoolArray)):
+    randIntGen(group)
+    decimalRand = randCorrectNum / (randCorrectNum + randIncorrectNum)
+    percentRand = round(decimalRand * 100)
+    percentRandArray.append(percentRand)
+
+print("\nIn the following arrays, 0 lacks the disease, 0.5 is remission, and 1 is the disease.")
+print("Alzheimers' diagnoses: %s" % group)
+
+randIntGen(group)
+print("Randomly generated values: %s" % randArray)
+
+print("\nBoolean array of random numbers correct: %s" % randBoolArray)
+print("Number correct: %s" % randCorrectNum)
+print("Number incorrect: %s" % randIncorrectNum)
+
+print("\nThe model's accuracy: %s%%" % percent)
+# the array of 373 percentages is randomly generated to test how much the model improves upon pure chance
+print("The array of 373 percentages that were randomly generated: %s" % percentRandArray)
+print("The same array, sorted: %s" % sorted(percentRandArray))
+
+randIndex = random.randint(0, len(percentRandArray))
+# compare an arbitrary random percentage with the value from the neural network algorithm
+print("A random choice from the random percentages: %s%%" % percentRandArray[randIndex])
