@@ -2,6 +2,7 @@ import csv
 import pandas
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 longitudinal = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
 
@@ -15,6 +16,8 @@ links for reference:
 -https://stackoverflow.com/questions/36921951/truth-value-of-a-series-is-ambiguous-use-a-empty-a-bool-a-item-a-any-o
 -https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html
 -https://stackoverflow.com/questions/17470883/rounding-to-two-decimal-places-in-python-2-7
+-https://docs.python.org/2/library/random.html
+-https://stackoverflow.com/questions/19326004/access-a-function-variable-outside-the-function-without-using-global
 """
 
 # independent variables
@@ -29,3 +32,14 @@ group = []
 # put variables in array to iterate through & clean up
 variables = [age, socioEconomicStatus, mentalStateExamination,
              estimatedTotalIntracranialVolume, group]             
+
+"""
+for the "effectiveness of model" section, the neural network algorithm is compared to pure random number generation to see how much it improves on pure chance
+-use random.randint for generating random numbers
+-compare random output with model, show variables to compare/contrast two methods of prediction
+"""
+# use following arrays to add random numbers and justify whether random guess is correct
+randArray = []
+randBoolArray = []
+randCorrectNum = 0
+randIncorrectNum = 0
