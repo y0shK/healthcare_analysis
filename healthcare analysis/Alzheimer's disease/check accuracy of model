@@ -51,3 +51,14 @@ print("The same array, sorted: %s" % sorted(percentRandArray))
 randIndex = random.randint(0, len(percentRandArray))
 # compare an arbitrary random percentage with the value from the neural network algorithm
 print("A random choice from the random percentages: %s%%" % percentRandArray[randIndex])
+
+# find mean and median of all random choices
+totalCount = 0
+for i in range(len(percentRandArray)):
+    totalCount += percentRandArray[i]
+
+mean = round(totalCount / len(percentRandArray))
+median = statistics.median(sorted(percentRandArray))
+
+print("The average of all the random percentages: %s%%" % mean)
+print("The median of all the random percentages: %s%%" % median)
