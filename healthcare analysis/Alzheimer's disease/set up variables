@@ -3,6 +3,7 @@ import pandas
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import statistics
 
 longitudinal = '/home/yash/Desktop/datasets/oasis_longitudinal.csv'
 
