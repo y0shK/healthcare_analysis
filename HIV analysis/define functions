@@ -1,0 +1,43 @@
+# create a function to make string values integers
+def makeInt(dataArray):
+    for i in range(len(dataArray)):
+        try:
+            dataArray[i] = int(dataArray[i])
+        except ValueError:
+            dataArray[i] = float(dataArray[i])
+    return dataArray
+    
+# create a function to plot a linear regression
+def plotReg(x, y):
+    xShape = np.array(x).reshape(-1, 1)
+    yShape = np.array(y)
+
+    regression = LinearRegression()
+    regression.fit(xShape, yShape)
+
+    yInt = regression.intercept_
+    coef = regression.coef_[0]
+
+    print("Y-intercept: %s" % yInt)
+    print("Coefficient: %s" % coef)
+    print("Trend line: y = %sx + %s" % (coef, yInt))
+
+    xPlot = xShape
+    yPlot = (coef * xShape) + yInt
+
+    plt.plot(xPlot, yPlot)
+
+    r2Score = r2_score(yShape, yPlot)
+    print("r^2 score: %s" % r2Score)
+
+# plot the data, with linear regression called as an implicit function
+def plotPlt(var1, var2, string1, string2, color):
+    plt.scatter(var1, var2, color='%s' % color)
+    plt.title('%s vs. %s' % (string2, string1), fontsize=14)
+    plt.xlabel("%s" % string1, fontsize=12)
+    plt.ylabel("%s" % string2, fontsize=12)
+
+    plotReg(var1, var2)
+    plt.grid(True)
+    plt.show()
+    
