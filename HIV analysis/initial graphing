@@ -1,0 +1,6 @@
+# perform initial stats analysis with dataFrame
+x1 = df['Adult prevalence %']
+y1 = df['Orphans due to AIDS']
+reExpressed_y1 = np.log(df['Orphans due to AIDS']) # use logarithm to make scale more compact
+
+plotPlt(x1, reExpressed_y1, 'Adult prevalence %', 'Number of orphans (log)', 'red')
