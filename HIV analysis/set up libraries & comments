@@ -1,0 +1,20 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+"""
+Links cited:
+-https://www.techbeamers.com/python-list-pop/
+-https://stackoverflow.com/questions/18169965/how-to-delete-last-item-in-list
+-https://stackoverflow.com/questions/31287552/logarithmic-returns-in-pandas-dataframe
+-https://realpython.com/linear-regression-in-python/
+-https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html
+-https://stackoverflow.com/questions/14000595/graphing-an-equation-with-matplotlib
+
+To update:
+add linear residual plot
+-https://stackoverflow.com/questions/24116318/how-to-show-residual-in-the-bottom-of-a-matplotlib-plot
+"""
