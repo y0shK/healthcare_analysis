@@ -16,3 +16,12 @@ hivStats = [peopleNum, adultPrevalence, womenNum, childrenNum, aidsDeaths, orpha
 for stat in hivStats:
     print(stat)
     
+# create and print a dataFrame
+factors = {'People infected with HIV': peopleNum, 'Adult prevalence %': adultPrevalence,
+           'Women with HIV': womenNum, 'Children with HIV': childrenNum,
+           'Deaths due to AIDS': aidsDeaths, 'Orphans due to AIDS': orphanNum}
+
+df = pd.DataFrame(factors, columns=['People infected with HIV', 'Adult prevalence %',
+            'Women with HIV', 'Children with HIV',
+            'Deaths due to AIDS', 'Orphans due to AIDS'])
+print("\n%s" % df)
