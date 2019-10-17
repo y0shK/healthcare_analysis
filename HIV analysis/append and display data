@@ -1,0 +1,18 @@
+# import and define data
+csv = '/home/yash/Downloads/hiv-and-aids-statistics-2011-better.csv'
+hivData = pd.read_csv(csv)
+
+# define dataFrame arrays
+peopleNum = hivData['People living with HIV/AIDS'].values.tolist()
+adultPrevalence = hivData['Adult (15-49) prevalence %'].values.tolist()
+womenNum = hivData['Women with HIV/AIDS'].values.tolist()
+childrenNum = hivData['Children with HIV/AIDS'].values.tolist()
+aidsDeaths = hivData['AIDS deaths'].values.tolist()
+orphanNum = hivData['Orphans due to AIDS'].values.tolist()
+
+# create master array for printing
+hivStats = [peopleNum, adultPrevalence, womenNum, childrenNum, aidsDeaths, orphanNum]
+
+for stat in hivStats:
+    print(stat)
+    
