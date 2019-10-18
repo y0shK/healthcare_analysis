@@ -7,28 +7,36 @@ def makeInt(dataArray):
             dataArray[i] = float(dataArray[i])
     return dataArray
     
-# create a function to plot a linear regression
+def func(x, c): # logarithmic function of xData + yData for "y-intercept"
+    with np.errstate(divide='ignore'):
+        return np.log10(x) + c
+
+# create a function to plot a regression
 def plotReg(x, y):
-    xShape = np.array(x).reshape(-1, 1)
-    yShape = np.array(y)
+    xMin = x.min()
+    xMax = x.max()
 
-    regression = LinearRegression()
-    regression.fit(xShape, yShape)
+    yMin = y.min()
+    yMax = y.max()
 
-    yInt = regression.intercept_
-    coef = regression.coef_[0]
+    xData = np.linspace(xMin, xMax)
+    yData = np.linspace(yMin, yMax)
 
-    print("Y-intercept: %s" % yInt)
-    print("Coefficient: %s" % coef)
-    print("Trend line: y = %sx + %s" % (coef, yInt))
+    plt.plot(xData, yData) # linear model
+    plt.plot(xData, func(xData, yData)) # logarithmic model
+    plt.grid(True)
+    plt.show()
 
-    xPlot = xShape
-    yPlot = (coef * xShape) + yInt
+    # plot resid
+    residArray = []
+    for i in range(len(yData)):
+        resid = yData[i] - func(xData[i], yData[i])
+        residArray.append(resid)
+    print(residArray)
 
-    plt.plot(xPlot, yPlot)
-
-    r2Score = r2_score(yShape, yPlot)
-    print("r^2 score: %s" % r2Score)
+    plt.scatter(xData, residArray)
+    plt.grid(True)
+    plt.show()
 
 # plot the data, with linear regression called as an implicit function
 def plotPlt(var1, var2, string1, string2, color):
