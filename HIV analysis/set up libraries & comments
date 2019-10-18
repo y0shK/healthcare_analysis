@@ -2,9 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
-
 """
 Links cited:
 -https://www.techbeamers.com/python-list-pop/
@@ -13,6 +10,11 @@ Links cited:
 -https://realpython.com/linear-regression-in-python/
 -https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html
 -https://stackoverflow.com/questions/14000595/graphing-an-equation-with-matplotlib
+-https://stackoverflow.com/questions/38666527/what-is-the-necessity-of-plt-figure-in-matplotlib
+-https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+-https://stackoverflow.com/questions/8194959/how-to-multiply-individual-elements-of-a-list-with-a-number
+-https://stackoverflow.com/questions/10519237/python-how-to-avoid-numpy-runtimewarning-in-function-definition
+-https://docs.scipy.org/doc/numpy/reference/generated/numpy.errstate.html
 
 To update:
 add linear residual plot
