@@ -1,0 +1,19 @@
+def pltHist(array, arrayStr):
+    for i in range(len(array)):
+        plt.title("Probability density function: %s" % arrayStr[i])
+        plt.xlabel("%s" % arrayStr[i])
+        plt.ylabel("Percentage (%)")
+        plt.hist(indVars[i], density=True)
+        plt.show()
+
+pltHist(indVars, indVarStrings)
+
+def pltScatter(x, y, strX):
+    for i in range(len(x)):
+        plt.scatter(x[i], y)
+        plt.title("Diagnosis vs. %s" % strX[i])
+        plt.xlabel('%s' % strX[i])
+        plt.ylabel('Diagnosis')
+        plt.show()
+
+pltScatter(indVars, diagnosis, indVarStrings)
