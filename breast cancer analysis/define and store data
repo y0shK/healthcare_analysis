@@ -1,0 +1,31 @@
+# the bigger the tumor, the higher the chance to be malignant
+areaMean = data['area_mean'].tolist()
+areaSE = data['area_se'].tolist()
+
+# the more compact, the worse the tumor tends to be
+compactnessMean = data['compactness_mean'].tolist()
+compactnessSE = data['compactness_se'].tolist()
+
+# bumpy textures tend to be proportionately more malignant
+textureMean = data['texture_mean'].tolist()
+textureSE = data['texture_se'].tolist()
+
+# concavity means tumor is heading into body, which is unnatural and concerning
+concavityMean = data['concavity_mean'].tolist()
+concavitySE = data['concavity_se'].tolist()
+
+# diagnosis depends on all of the favors above
+indVars = [areaMean, compactnessMean, textureMean, concavityMean]
+indVarSE = [areaSE, compactnessSE, textureSE, concavitySE]
+diagnosis = data['diagnosis'].tolist()
+
+factors = {'Mean area': areaMean, 'Mean compactness': compactnessMean,
+           'Mean texture': textureMean, 'Mean concavity': concavityMean,
+           'Diagnosis': diagnosis}
+
+indVarStrings = list(factors.keys())
+depVarString = ['Diagnosis']
+
+df = pd.DataFrame(factors, columns=['Mean area', 'Mean compactness', 'Mean texture',
+                                    'Mean concavity', 'Diagnosis'])
+print(df)
