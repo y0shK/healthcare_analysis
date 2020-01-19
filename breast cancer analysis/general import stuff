@@ -1,0 +1,32 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+"""
+Goal: create SVM algorithm for Breast Cancer Wisconsin set and use neural network for analysis
+
+Ranking variables:
+primarily use TNM (tumor, node, metastasis)
+
+Breast cancer research sources:
+https://www.cancer.net/cancer-types/breast-cancer/stages
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3678677/
+https://ww5.komen.org/AboutBreastCancer/DiagnosingBreastCancer/UnderstandingaDiagnosis/TumorTypesSizesGrades.html
+https://cancer.stonybrookmedicine.edu/breast-cancer-team/patients/bse/breastlumps
+
+Python syntax/library sources:
+https://www.datacamp.com/community/tutorials/svm-classification-scikit-learn-python
+https://stackoverflow.com/questions/16819222/how-to-return-dictionary-keys-as-a-list-in-python
+https://stackoverflow.com/questions/45150238/error-with-matplotlib-show-module-matplotlib-has-no-attribute-show/45150262
+https://stackoverflow.com/questions/42883139/trying-to-resize-an-image-that-is-printed-out-by-matplotlib-pyplot
+
+Tumor
+-size = area_mean -> direct correlation
+Node and metastasis
+-compactness = compactness_mean -> if tumor is bunched up in one place, then worse impact
+-texture = texture_mean -> bumpy is scarier
+-concavity = concavity_mean (more concavity -> inwards -> scarier, more unnatural)
+"""
+
+dataLoc = '~/Downloads/analysis_healthcare/breastCancer/data.csv'
+data = pd.read_csv(dataLoc)
+print(data)
