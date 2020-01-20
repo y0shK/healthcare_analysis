@@ -14,18 +14,46 @@ textureSE = data['texture_se'].tolist()
 concavityMean = data['concavity_mean'].tolist()
 concavitySE = data['concavity_se'].tolist()
 
+# list other variables; will be weighted later in the neural network
+radiusMean = data['radius_mean'].tolist() # radius correlated w/ malignance
+radiusSE = data['radius_se'].tolist()
+
+perimeterMean = data['perimeter_mean'].tolist() # perimeter / area = "density"
+perimeterSE = data['perimeter_se'].tolist()
+
+smoothnessMean = data['smoothness_mean'].tolist() # malignance -> lumpy texture
+smoothnessSE = data['smoothness_se'].tolist()
+
+concavePointsMean = data['concave points_mean'].tolist() # more concavity -> malignant (invasive against natural cells)
+concavePointsSE = data['concave points_se'].tolist()
+
+symmetryMean = data['symmetry_mean'].tolist() # symmetry associates with normalcy of cell operation
+symmetrySE = data['symmetry_se'].tolist()
+
+fractalDimensionMean = data['fractal_dimension_mean'].tolist() # approximation of normalcy of surrounding tissue
+fractalDimensionSE = data['fractal_dimension_se'].tolist()
+
+otherVariablesMean = [radiusMean, perimeterMean, smoothnessMean, concavePointsMean, symmetryMean, fractalDimensionMean]
+otherVariablesSE = [radiusSE, perimeterSE, smoothnessSE, concavePointsSE, symmetrySE, fractalDimensionSE]
+
 # diagnosis depends on all of the favors above
-indVars = [areaMean, compactnessMean, textureMean, concavityMean]
-indVarSE = [areaSE, compactnessSE, textureSE, concavitySE]
+indVars = [areaMean, compactnessMean, textureMean, concavityMean] + otherVariablesMean
+indVarSE = [areaSE, compactnessSE, textureSE, concavitySE] + otherVariablesSE
+
 diagnosis = data['diagnosis'].tolist()
 
 factors = {'Mean area': areaMean, 'Mean compactness': compactnessMean,
            'Mean texture': textureMean, 'Mean concavity': concavityMean,
+           'Mean radius': radiusMean, 'Mean perimeter': perimeterMean,
+           'Mean smoothness': smoothnessMean, 'Mean concave points': concavePointsMean,
+           'Mean symmetry': symmetryMean, 'Mean fractal dimensions': fractalDimensionMean,
            'Diagnosis': diagnosis}
 
 indVarStrings = list(factors.keys())
 depVarString = ['Diagnosis']
 
 df = pd.DataFrame(factors, columns=['Mean area', 'Mean compactness', 'Mean texture',
-                                    'Mean concavity', 'Diagnosis'])
+                                    'Mean concavity', 'Mean radius', 'Mean perimeter',
+                                    'Mean smoothness', 'Mean concave points', 'Mean symmetry',
+                                    'Mean fractal dimensions', 'Diagnosis'])
 print(df)
