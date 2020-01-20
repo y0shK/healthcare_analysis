@@ -1,10 +1,21 @@
-def pltHist(array, arrayStr):
+def pltHist(arrayMean, arraySE, arrayStr):
     for i in range(len(array)):
         plt.title("Probability density function: %s" % arrayStr[i])
         plt.xlabel("%s" % arrayStr[i])
         plt.ylabel("Percentage (%)")
-        plt.hist(indVars[i], density=True)
+        plt.hist(arrayMean[i], density=True)
         plt.show()
+
+        for i in range(len(arrayMean)):
+           for j in range(len(arrayMean[i])):
+               mean = float(np.mean(arrayMean[i][j]))
+               SE = float(np.mean(arraySE[i][j]))
+               minus = float(mean - 2 * SE)
+               plus = float(mean + 2 * SE)
+
+               print("\nMean: %s" % mean)
+               print("SE: %s" % SE)
+               print("95% of the data is between " + str(minus) + " and " + str(plus) + ".")
 
 pltHist(indVars, indVarStrings)
 
