@@ -4,6 +4,7 @@ import numpy as np
 
 from mlxtend.plotting import plot_decision_regions
 from sklearn import svm
+from random import randint
 
 """
 Goal: create SVM algorithm for Breast Cancer Wisconsin set and use neural network for analysis
@@ -26,6 +27,7 @@ https://stackoverflow.com/questions/43284811/plot-svm-with-matplotlib
 https://stackoverflow.com/questions/52952310/plot-decision-regions-with-error-filler-values-must-be-provided-when-x-has-more
 https://stackoverflow.com/questions/332289/how-do-you-change-the-size-of-figures-drawn-with-matplotlib
 https://stackoverflow.com/questions/38134643/data-frame-object-has-no-attribute
+https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
 
 Tumor
 -size = area_mean -> direct correlation
