@@ -1,0 +1,29 @@
+# change string diagnosis to int, necessary for DataFrame input for the SVM
+for i in range(len(diagnosis)):
+    if diagnosis[i] == 'M':
+        diagnosis[i] = 1
+    elif diagnosis[i] == 'B':
+        diagnosis[i] = 0
+
+# create a new DataFrame to pass to mlxtend for graphing the SVM (earlier DF was for printing data) 
+df_svm = pd.DataFrame({'Mean area': areaMean, 'Mean compactness': compactnessMean,
+           'Mean texture': textureMean, 'Mean concavity': concavityMean,
+           'Mean radius': radiusMean, 'Mean perimeter': perimeterMean,
+           'Mean smoothness': smoothnessMean, 'Mean concave points': concavePointsMean,
+           'Mean symmetry': symmetryMean, 'Mean fractal dimensions': fractalDimensionMean,
+           'Diagnosis': diagnosis})
+
+X = df_svm[['Mean area', 'Mean concavity']] # arbitrarily chosen, add functionality to fuzzily categorize any two elements
+Y = df_svm['Diagnosis']
+
+# decision_function_shape = ovo, or 'one-vs-one' for graph
+# essentially tells the SVM that all other DataFrame variables don't mean anything for the graph
+clf = svm.SVC(decision_function_shape='ovo')
+clf.fit(X.values, Y.values)
+
+plot_decision_regions(X=X.values, y=Y.values, clf=clf, legend=2)
+
+plt.xlabel(X.columns[0])
+plt.ylabel(X.columns[1])
+plt.title('SVM classification')
+plt.show()
