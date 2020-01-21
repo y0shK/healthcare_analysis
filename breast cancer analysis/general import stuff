@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from mlxtend.plotting import plot_decision_regions
+from sklearn import svm
+
 """
 Goal: create SVM algorithm for Breast Cancer Wisconsin set and use neural network for analysis
 
@@ -19,6 +22,10 @@ https://www.datacamp.com/community/tutorials/svm-classification-scikit-learn-pyt
 https://stackoverflow.com/questions/16819222/how-to-return-dictionary-keys-as-a-list-in-python
 https://stackoverflow.com/questions/45150238/error-with-matplotlib-show-module-matplotlib-has-no-attribute-show/45150262
 https://stackoverflow.com/questions/42883139/trying-to-resize-an-image-that-is-printed-out-by-matplotlib-pyplot
+https://stackoverflow.com/questions/43284811/plot-svm-with-matplotlib
+https://stackoverflow.com/questions/52952310/plot-decision-regions-with-error-filler-values-must-be-provided-when-x-has-more
+https://stackoverflow.com/questions/332289/how-do-you-change-the-size-of-figures-drawn-with-matplotlib
+https://stackoverflow.com/questions/38134643/data-frame-object-has-no-attribute
 
 Tumor
 -size = area_mean -> direct correlation
