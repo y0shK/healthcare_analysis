@@ -13,12 +13,24 @@ df_svm = pd.DataFrame({'Mean area': areaMean, 'Mean compactness': compactnessMea
            'Mean symmetry': symmetryMean, 'Mean fractal dimensions': fractalDimensionMean,
            'Diagnosis': diagnosis})
 
-X = df_svm[['Mean area', 'Mean concavity']] # arbitrarily chosen, add functionality to fuzzily categorize any two elements
+parameterStrings = ['Mean area', 'Mean compactness', 'Mean texture', 'Mean concavity', 'Mean radius', 'Mean perimeter',
+    'Mean smoothness', 'Mean concave points', 'Mean symmetry', 'Mean fractal dimensions']
+    
+# generate random numbers to constantly illustrate a different polynomial SVM
+parameter1 = randint(0,9)
+parameter2 = randint(0,9)
+
+X = df_svm[[parameterStrings[parameter1], parameterStrings[parameter2]]]
 Y = df_svm['Diagnosis']
 
-# decision_function_shape = ovo, or 'one-vs-one' for graph
-# essentially tells the SVM that all other DataFrame variables don't mean anything for the graph
-clf = svm.SVC(decision_function_shape='ovo')
+"""
+decision_function_shape:
+- =ovo, or 'one-vs-one' for graph
+- essentially tells the SVM that all other DataFrame variables don't mean anything for the graph
+second parameter: gamma-scale:
+-use gamma=scale instead of gamma=auto because X has two elements (gamma=auto is for one element)
+"""
+clf = svm.SVC(decision_function_shape='ovo', gamma='scale')
 clf.fit(X.values, Y.values)
 
 plot_decision_regions(X=X.values, y=Y.values, clf=clf, legend=2)
@@ -27,3 +39,9 @@ plt.xlabel(X.columns[0])
 plt.ylabel(X.columns[1])
 plt.title('SVM classification')
 plt.show()
+
+"""
+To-do list
+-matplotlib + LinReg classifier for any two features, separated linearly; mlxtend is for polynomial separation
+-add neural network for numerical breast cancer data
+"""
