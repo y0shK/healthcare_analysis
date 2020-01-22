@@ -29,6 +29,11 @@ parameterStrings = ['Mean area', 'Mean compactness', 'Mean texture', 'Mean conca
 # create new random numbers for LinReg
 parameter1_LinReg = randint(0,9)
 parameter2_LinReg = randint(0,9)
+while parameter1_LinReg == parameter2_LinReg:
+    parameter1_LinReg = randint(0,9)
+    parameter2_LinReg = randint(0,9)
+    if parameter1_LinReg != parameter2_LinReg:
+        break
 
 # use array of all attributes with random number index to access relevant data
 xGraphLinReg = indVars[parameter1_LinReg]
