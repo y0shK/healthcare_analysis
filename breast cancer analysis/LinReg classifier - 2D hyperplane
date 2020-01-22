@@ -1,0 +1,44 @@
+# graph factors using a linear regression to create a linear classifier (2D hyperplane)
+def graphLinReg(x, y, xLabel, yLabel):
+    plt.scatter(x, y, color='red') # differentiate between red slope and blue points
+    plt.xlabel('%s' % xLabel)
+    plt.ylabel('%s' % yLabel)
+    plt.title('%s vs. %s' % (yLabel, xLabel))
+
+    z = np.polyfit(x, y, 1) # create a 1D polynomial (i.e. line)
+    f = np.poly1d(z) # create a function with respect to the polynomial line, to which we can plug in inputs
+    plt.plot(x, f(x)) # plot y by using f(x) for the artificial (rather than natural) y points
+
+    # calculate mean sum squared error (not actually squared, mse refers to distance, not displacement)
+    mseSum = 0
+    for i in range(len(x)):  # iterate through all elements (every single patient)
+        mse = np.mean(np.sqrt((x[i] - f(x)) ** 2))  # takes average of abs(difference) of (individual dot - trend line)
+        mseSum += mse
+    print("Total mean sum squared error: " + str(mseSum))  # total error for all points to the trend line
+
+    plt.show()
+
+df_svm_linReg = pd.DataFrame(factors, columns=['Mean area', 'Mean compactness', 'Mean texture',
+                                    'Mean concavity', 'Mean radius', 'Mean perimeter',
+                                    'Mean smoothness', 'Mean concave points', 'Mean symmetry',
+                                    'Mean fractal dimensions', 'Diagnosis'])
+
+parameterStrings = ['Mean area', 'Mean compactness', 'Mean texture', 'Mean concavity', 'Mean radius', 'Mean perimeter',
+    'Mean smoothness', 'Mean concave points', 'Mean symmetry', 'Mean fractal dimensions']
+
+# create new random numbers for LinReg
+parameter1_LinReg = randint(0,9)
+parameter2_LinReg = randint(0,9)
+
+# use array of all attributes with random number index to access relevant data
+xGraphLinReg = indVars[parameter1_LinReg]
+yGraphLinReg = indVars[parameter2_LinReg]
+
+# use DataFrame to access the labels for each axis
+X = df_svm_linReg[[parameterStrings[parameter1_LinReg], parameterStrings[parameter2_LinReg]]]
+
+# use DataFrame labels to pass to graphing function
+xLabelLinReg = X.columns[0]
+yLabelLinReg = X.columns[1]
+
+graphLinReg(xGraphLinReg, yGraphLinReg, xLabelLinReg, yLabelLinReg)
