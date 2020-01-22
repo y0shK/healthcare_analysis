@@ -1,7 +1,7 @@
 # calculate mean sum squared error
 mseSum = 0
 for i in range(len(df_falco)): # iterate through all elements (i.e. frames + %)
-    mse = np.mean((Y[i] - f(X)) ** 2) # takes difference of (individual dot - trend line)
+    mse = np.mean(np.sqrt((Y[i] - f(X)) ** 2) # takes difference of (individual dot - trend line)
     mseSum += mse
 print("Total mean sum squared error: " + str(mseSum)) # total error for all points to the trend line
 
