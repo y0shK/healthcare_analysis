@@ -1,6 +1,8 @@
 # graph factors using a linear regression to create a linear classifier (2D hyperplane)
-def graphLinReg(x, y, xLabel, yLabel):
+def graphLinReg(x, y, xLabel, yLabel, x_df, y_df):
     plt.scatter(x, y, color='red') # differentiate between red slope and blue points
+
+    # use DataFrame to label the axes
     plt.xlabel('%s' % xLabel)
     plt.ylabel('%s' % yLabel)
     plt.title('%s vs. %s' % (yLabel, xLabel))
@@ -14,7 +16,22 @@ def graphLinReg(x, y, xLabel, yLabel):
     for i in range(len(x)):  # iterate through all elements (every single patient)
         mse = np.mean(np.sqrt((x[i] - f(x)) ** 2))  # takes average of abs(difference) of (individual dot - trend line)
         mseSum += mse
-    print("Total mean sum squared error: " + str(mseSum))  # total error for all points to the trend line
+    print("Total mean sum squared error: " + str(round(mseSum, 4)))  # total error for all points to the trend line
+
+    # use DataFrame for the regression, while using X.columns[0] or [1] for the actual label and string text
+    regression = linear_model.LinearRegression()
+    regression.fit(x_df, y_df)
+
+    y_int = round(regression.intercept_, 4)
+    x_coefficient = round(float(regression.coef_), 4) # use type float for more accurate slope calculations
+
+    # use sympy modules
+    x = sympy.Symbol('x')
+    yFn = x_coefficient * x + y_int
+
+    print("\nY-intercept: %s" % y_int)
+    print("Coefficient: %s" % x_coefficient)
+    print("Trend line equation: %s" % yFn)
 
     plt.show()
 
@@ -34,7 +51,7 @@ while parameter1_LinReg == parameter2_LinReg:
     parameter2_LinReg = randint(0,9)
     if parameter1_LinReg != parameter2_LinReg:
         break
-
+        
 # use array of all attributes with random number index to access relevant data
 xGraphLinReg = indVars[parameter1_LinReg]
 yGraphLinReg = indVars[parameter2_LinReg]
@@ -42,8 +59,11 @@ yGraphLinReg = indVars[parameter2_LinReg]
 # use DataFrame to access the labels for each axis
 X = df_svm_linReg[[parameterStrings[parameter1_LinReg], parameterStrings[parameter2_LinReg]]]
 
-# use DataFrame labels to pass to graphing function
-xLabelLinReg = X.columns[0]
-yLabelLinReg = X.columns[1]
+# use DataFrame labels to pass to graphing function and create DataFrame to use for regression
+xLabel_LinReg = X.columns[0]
+yLabel_LinReg = X.columns[1]
 
-graphLinReg(xGraphLinReg, yGraphLinReg, xLabelLinReg, yLabelLinReg)
+xDF_LinReg = df_svm_linReg[[parameterStrings[parameter1_LinReg]]] # use 2D array for x DataFrame, needed for regression
+yDF_LinReg = df_svm_linReg[parameterStrings[parameter2_LinReg]]
+
+graphLinReg(xGraphLinReg, yGraphLinReg, xLabel_LinReg, yLabel_LinReg, xDF_LinReg, yDF_LinReg)
