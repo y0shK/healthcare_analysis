@@ -1,5 +1,5 @@
 def pltHist(arrayMean, arraySE, arrayStr):
-    for i in range(len(array)):
+    for i in range(len(arrayMean)):
         plt.title("Probability density function: %s" % arrayStr[i])
         plt.xlabel("%s" % arrayStr[i])
         plt.ylabel("Percentage (%)")
@@ -17,7 +17,7 @@ def pltHist(arrayMean, arraySE, arrayStr):
                print("SE: %s" % SE)
                print("95% of the data is between " + str(minus) + " and " + str(plus) + ".")
 
-pltHist(indVars, indVarStrings)
+pltHist(indVars, indVarSE, indVarStrings)
 
 def pltScatter(x, y, strX):
     for i in range(len(x)):
