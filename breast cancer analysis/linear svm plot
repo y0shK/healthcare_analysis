@@ -1,0 +1,88 @@
+X_linear = df_svm[[parameterStrings[parameter1_LinReg], parameterStrings[parameter2_LinReg]]]
+Y_linear = df_svm['Diagnosis']
+
+def make_meshgrid(x, y, h=.02):
+    """
+    Create a mesh of points to plot in.
+
+    Parameters
+    ----------
+    x: data to base x-axis meshgrid on
+    y: data to base y-axis meshgrid on
+    h: stepsize for meshgrid, optional
+
+    Returns
+    -------
+    xx, yy : ndarray
+    """
+
+    # min()-1 and max()+1 because python is 0-indexed and np.arange is [0, n)
+    # because n is excluded in np.arange [0, n), we use n+1 to secure its index
+    x_min, x_max = x.min() - 1, x.max() + 1
+    y_min, y_max = y.min() - 1, y.max() + 1
+
+    # h is the step size for arange to iterate with
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    return xx, yy
+
+def plot_contours(ax, clf_lin, xx, yy, **params):
+    """
+    Plot the decision boundaries for a classifier.
+
+    Parameters
+    ----------
+    ax: matplotlib axes object
+    clf: a classifier
+    xx: meshgrid ndarray
+    yy: meshgrid ndarray
+    params: dictionary of params to pass to contourf, optional
+
+    Returns
+    ---------
+    out: a contourf grid on which to draw the SVM later
+    """
+
+    # np.ravel() returns a 1D element of the np.array which is reshaped into the xx array length
+    Z = clf_lin.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    out = ax.contourf(xx, yy, Z, **params) # draw contour lines with meshgrid, made 1D by reshape
+    return out
+
+# take the first two features of each DataFrame to plug into the SVC
+X_lin_svm = X_linear.values
+y_lin_svm = Y_linear.values
+
+# always make C=1 default (classify everything correctly, not hyper-focused on accuracy)
+models = (svm.SVC(kernel='linear', C=1), svm.LinearSVC(C=1))
+models = (clf_lin.fit(X_lin_svm, y_lin_svm) for clf_lin in models)
+
+# titles for the plots
+titles = ('SVC with linear kernel', 'LinearSVC (linear kernel)')
+
+# create a 1x2 sub-grid to plot the SVC with linear kernel + LinearSVC
+# linear kernel uses ovo (one vs one factor recognition) while LinearSVC uses ovr (one vs rest)
+# minor differences exist in how the algorithms determine boundaries, but both use linear heuristics for classifiers
+fig, sub = plt.subplots(1, 2)
+plt.subplots_adjust(wspace=0.4, hspace=0.4) # width and height between subplots
+
+# slice lists - take out all rows but the 0th or 1st for X0 and X1 respectively
+X0, X1 = X_lin_svm[:, 0], X_lin_svm[:, 1]
+xx, yy = make_meshgrid(X0, X1) # make meshgrid to plot clf (classifier) contours within
+
+# zip() takes inputs and goes through the iterated variables
+# sub.flatten() takes the graphs and puts them in one list (rather than a 2D array) for simple iteration
+for clf_lin, title, ax in zip(models, titles, sub.flatten()):
+    plot_contours(ax, clf_lin, xx, yy,
+                  cmap=plt.cm.coolwarm, alpha=0.8) # alpha = visual blending value between 0 and 1 for graph
+
+    # s = how many elements are in the array
+    ax.scatter(X0, X1, c=y_lin_svm, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
+    ax.set_xlim(xx.min(), xx.max())
+    ax.set_ylim(yy.min(), yy.max())
+    ax.set_xlabel('%s' % X_linear.columns[0])
+    ax.set_ylabel('%s' % X_linear.columns[1])
+    ax.set_xticks(())
+    ax.set_yticks(())
+    ax.set_title(title)
+
+plt.show()
