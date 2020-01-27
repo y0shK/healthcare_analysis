@@ -42,7 +42,12 @@ plot_decision_regions(X=X.values, y=Y.values, clf=clf, legend=2)
 
 plt.xlabel(X.columns[0])
 plt.ylabel(X.columns[1])
-plt.title('SVM classification')
+plt.title('polynomial SVM classification')
+
+L = plt.legend()
+L.get_texts()[0].set_text('Benign')
+L.get_texts()[1].set_text('Malignant')
+
 plt.show()
 
 """
