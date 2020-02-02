@@ -31,3 +31,15 @@ http://rasbt.github.io/mlxtend/user_guide/plotting/plot_decision_regions/
 http://rasbt.github.io/mlxtend/api_subpackages/mlxtend.plotting/#plot_decision_regions
 http://rasbt.github.io/mlxtend/user_guide/plotting/plot_decision_regions/#example-10-providing-your-own-legend-labels
 """
+
+# Documentation for neural network:
+
+Model from: 
+https://dev.to/shamdasani/build-a-flexible-neural-network-with-backpropagation-in-python
+
+# d-types: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# np.amax: https://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
+# np.random.randn: https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
+# array[:-n or None]: https://stackoverflow.com/questions/15715912/remove-the-last-n-elements-of-a-list
+# itertools and product: https://stackoverflow.com/questions/6499327/the-pythonic-way-to-generate-pairs
+# array[:n or None]: https://stackoverflow.com/questions/33626623/the-most-efficient-way-to-remove-first-n-elements-in-a-list
