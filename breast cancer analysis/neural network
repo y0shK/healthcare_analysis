@@ -1,53 +1,76 @@
 # code model:
 # https://dev.to/shamdasani/build-a-flexible-neural-network-with-backpropagation-in-python
 
-# d-types: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-# np.amax: https://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
-# np.random.randn: https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
-# array[:-n or None]: https://stackoverflow.com/questions/15715912/remove-the-last-n-elements-of-a-list
-# itertools and product: https://stackoverflow.com/questions/6499327/the-pythonic-way-to-generate-pairs
-
 # define parameters for the neural network - two random factors + diagnosis
 nn_parameter1 = factors[parameterStrings[parameter1]]
 nn_parameter2 = factors[parameterStrings[parameter2]]
 nn_parameter_output = factors['Diagnosis']
 
-# remove elements from the parameters so that MemoryError does not occur
 # too many elements increase computation time significantly (especially with itertools.product)
-# arbitrarily cut 369 elements, leave 200
+# conveniently decrease computation time by splitting into train and test sets
+# train = 369, test = 200
 n = 369
-nn_parameter1_short = nn_parameter1[:-n or None] # list splicing to get rid of all indices after n, or None if n = 0
-nn_parameter2_short = nn_parameter2[:-n or None]
-nn_parameter_output_short = nn_parameter_output[:-n or None]
+
+nn_parameter1_train = nn_parameter1[:n or None] # list splicing to get rid of all indices after n, or None if n = 0
+nn_parameter1_test = nn_parameter1[:-n or None]
+
+nn_parameter2_train = nn_parameter2[:n or None]
+nn_parameter2_test = nn_parameter_output[:-n or None]
+
+nn_parameter_output_train = nn_parameter_output[:n or None]
+nn_parameter_output_test = nn_parameter_output[:-n or None]
 
 """
 Approach:
 Use itertools to create ordered pairs from two separate lists
 e.g. a = [], b = [], itertools.product(a[i], b[j])
+Do this for both train and test sets
 
 Comments:
 -Create empty arrays to append each ordered itertools pair
 -Add a counter to break from the loop upon appending enough pairs, such that len(Y) = len(Y-hat) for the neural network
 """
-input_nn = []
+input_nn_train = []
+input_nn_test = []
+
+# train
 i_j_count = 0
 
-for i, j in itertools.product(nn_parameter1_short, nn_parameter2_short):
-    input_nn.append([i, j]) # append ordered pair as a list, not a dictionary
+# use the training set to establish the neural network's predictions
+for i, j in itertools.product(nn_parameter1_train, nn_parameter2_train):
+    input_nn_train.append([i, j]) # append ordered pair as a list, not a dictionary
     i_j_count += 1
-    if i_j_count == 200: # based upon the prior n cut of the data: i_j_count + n = len(parameter) = 569
+    if i_j_count == 369: # based upon the prior n cut of the data: i_j_count + n = len(parameter) = 569
+        break
+
+# test, reset the value
+i_j_count = 0
+
+# prime the test set for prediction and printing
+for i, j in itertools.product(nn_parameter1_test, nn_parameter2_test):
+    input_nn_test.append([i, j]) # append for test set
+    i_j_count += 1
+    if i_j_count == 200:  # based upon the prior n cut of the data: i_j_count + n = len(parameter) = 569
         break
 
 # no need to use counter for output data, because it is pre-split
-output_of_data = []
+output_of_data_train = []
+output_of_data_test = []
 
-for i in nn_parameter_output_short:
-    output_of_data.append([nn_parameter_output_short[i]])
+# same process as train and test set for each parameter, but no need for the counter
+for i in nn_parameter_output_train:
+    output_of_data_train.append([nn_parameter_output_train[i]])
+
+for i in nn_parameter_output_test:
+    output_of_data_test.append([nn_parameter_output_test[i]])
 
 # make the arrays np.arrays (which are essentially matrix arrays)
 # this allows for matrix multiplication with dot products in the neural network
-input_nn = np.array(input_nn)
-output_of_data = np.array(output_of_data)
+input_nn_train = np.array(input_nn_train)
+input_nn_test = np.array(input_nn_test)
+
+output_of_data_train = np.array(output_of_data_train)
+output_of_data_test = np.array(output_of_data_test)
 
 class neuralNetwork(object):
     def __init__(self):
@@ -85,7 +108,6 @@ class neuralNetwork(object):
         # use the derivative (change in slope) to describe a small, 'local' change on the gradient descent algorithm
         self.outputDelta = self.outputError * self.sigmoidPrime(output)
 
-        # https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.T.html
         # np_array.T is the transpose of np_array
         self.z2_error = self.outputDelta.dot(self.w2.T)
 
@@ -112,19 +134,15 @@ nn = neuralNetwork()
 # create loss array to ensure that the network is more accurate with each iteration
 lossArray = []
 
+# train the network
 for i in range(0, 5): # arbitrarily run 5 iterations
-    #print("Input matrix: \n" + str(input_nn))
-    #print("Forward propagation: \n" + str(nn.forwardProp(input_nn)))
-    #print("Actual data: \n" + str(output_of_data))
-
     # mean sum squared loss is the algorithm we use to initiate gradient descent
     # MSE tells the derivative where to move on the curve
     # gradient descent guides the movement to the local minimum by iterating MSE
-    loss = np.mean(np.square(output_of_data - nn.forwardProp(input_nn)))
+    loss = np.mean(output_of_data_test - nn.forwardProp(input_nn_test))
     lossArray.append(loss)
-    print("Loss: \n" + str(loss))
+    print("Loss " + str(i + 1) + ": \n" + str(loss))
 
-    # we train on iteration 1, not 0 - i.e. network needs some base case before induction with training
-    nn.train_network(input_nn, output_of_data)
+    nn.train_network(input_nn_train, output_of_data_train)
 
-print(lossArray)
+print("Loss array: \n" + str(lossArray))
