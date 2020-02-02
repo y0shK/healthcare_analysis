@@ -1,13 +1,15 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd # to print the DataFrame data
+import matplotlib.pyplot as plt # to graph the SVM algorithms
+import numpy as np # to convert arrays into np.arrays for the neural network
 
-from sklearn import linear_model
-import sympy
+from sklearn import linear_model # for linear regression
+import sympy # for a trend line equation
 
-from mlxtend.plotting import plot_decision_regions
-from sklearn import svm
-from random import randint
+from mlxtend.plotting import plot_decision_regions # for the decision_function_shape SVM
+from sklearn import svm # for the linear kernel SVM
+from random import randint # to randomly import two arrays of data
+
+import itertools # to create ordered pairs from different arrays
 
 """
 Goal: create SVM algorithm for Breast Cancer Wisconsin set and use neural network for analysis
