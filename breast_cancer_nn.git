@@ -1,0 +1,127 @@
+# code model:
+# https://dev.to/shamdasani/build-a-flexible-neural-network-with-backpropagation-in-python
+
+# d-types: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# np.amax: https://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
+
+nn_parameter1 = factors[parameterStrings[parameter1]]
+nn_parameter2 = factors[parameterStrings[parameter2]]
+nn_parameter_output = factors['Diagnosis']
+#print(nn_parameter_output)
+#print(nn_parameter1)
+#print(nn_parameter2)
+
+# cut 399 elements (arbitrary) in the list; lessen data so MemoryError does not occur
+n = 399
+nn_parameter1_short = nn_parameter1[:-n or None]
+nn_parameter2_short = nn_parameter2[:-n or None]
+nn_parameter_output_short = nn_parameter_output[:-n or None]
+
+#print(len(nn_parameter1_short))
+#print(len(nn_parameter2_short))
+
+input_nn = []
+# https://stackoverflow.com/questions/15715912/remove-the-last-n-elements-of-a-list
+
+import itertools
+
+i_j_count = 0
+for i, j in itertools.product(nn_parameter1_short, nn_parameter2_short):
+    input_nn.append([i, j])
+    i_j_count += 1
+    if i_j_count == 170: # arbitrary, based upon the prior n cut of the data
+        break
+
+output_of_data = []
+
+for i in nn_parameter_output_short:
+    output_of_data.append([nn_parameter_output_short[i]])
+
+#output_of_data = np.array(factors['Diagnosis']) # always stays the same to assess impact of the factor
+
+#print(input_nn)
+#print(output_of_data)
+
+input_nn = np.array(input_nn)
+output_of_data = np.array(output_of_data)
+
+class neuralNetwork(object):
+    def __init__(self):
+        # parameters - amount of items in each layer (we use 569 to match the size of the data provided)
+        self.inputSize = 2
+        self.outputSize = 1
+        self.hiddenSize = 3
+
+        # np.random.randn: https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
+        # use random.randn to return a random value from the provided standard normal curve
+
+        # define weights with respect to their input & hidden sizes
+        self.w1 = np.random.randn(self.inputSize, self.hiddenSize) # input to hidden
+        self.w2 = np.random.randn(self.hiddenSize, self.outputSize) # hidden to output
+
+    def forwardProp(self, X):
+        self.z1 = np.dot(X, self.w1) # dot product (number) of input and first random 3x2 weights
+        self.z2 = self.sigmoid(self.z1) # activation function
+        self.z3 = np.dot(self.z2, self.w2) # dot product of hidden layer and second random 3x2 weights
+        output = self.sigmoid(self.z3) # final activation function to return
+        return output
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def sigmoidPrime(self, x):
+        return x * (1 - x)
+
+    def backProp(self, X, Y, output):
+        # how different are the actual and predicted values?
+        # use y - y-hat by convention
+        self.outputError = Y - output
+
+        # use gradient descent to move down the sigmoid curve
+        # goal: get closer to absolute minimum, 0
+        # use the derivative (change in slope) to describe a small, 'local' change on the gradient descent algorithm
+        self.outputDelta = self.outputError * self.sigmoidPrime(output)
+
+        # https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.T.html
+        # np_array.T is the transpose of np_array
+        self.z2_error = self.outputDelta.dot(self.w2.T)
+
+        # same process of derivative and applying gradient descent for the hidden layer
+        self.z2_delta = self.z2_error * self.sigmoidPrime(self.z2)
+
+        # how are we changing the weights?
+        # take the transpose of the input array - X.T
+        # take its dot product with the hidden layer delta (how is slope changing on the curve? i.e. gradient descent)
+        # this dot product is the change in weights to get to 0 (absolute minimum)
+        # transpose(X) * change in hidden layer slope = how the weight needs to change to get the algorithm to the min
+        # this product is a change (or derivative), so it is added (not overridden) to the original weight
+        self.w1 += X.T.dot(self.z2_delta) # input to hidden
+        self.w2 += self.z2.T.dot(self.outputDelta) # hidden to output
+
+    def train_network(self, X, Y):
+        # implement the neural network algorithm - calculate, analyze error, repeat
+        # this function runs in a loop so the network gets new information more than once
+        output = self.forwardProp(X)
+        self.backProp(X, Y, output)
+
+nn = neuralNetwork()
+
+# create loss array to ensure that the network is more accurate with each iteration
+lossArray = []
+
+for i in range(0, 2):
+    #print("input: \n" + str(input_nn))
+    #print("Predicted Front: \n" + str(nn.forwardProp(input_nn)))
+    #print("Actual: \n" + str(output_of_data))
+
+    # mean sum squared loss is the algorithm we use to initiate gradient descent
+    # MSE tells the derivative where to move on the curve
+    # gradient descent guides the movement to the local minimum by iterating MSE
+    loss = np.mean(np.square(output_of_data - nn.forwardProp(input_nn)))
+    lossArray.append(loss)
+    print("Loss: \n" + str(loss))
+
+    # we train on iteration 1, not 0 - i.e. network needs some base case before induction with training
+    nn.train_network(input_nn, output_of_data)
+
+print(lossArray)
