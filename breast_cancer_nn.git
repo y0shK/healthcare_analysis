@@ -3,45 +3,49 @@
 
 # d-types: https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 # np.amax: https://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
+# np.random.randn: https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
+# array[:-n or None]: https://stackoverflow.com/questions/15715912/remove-the-last-n-elements-of-a-list
+# itertools and product: https://stackoverflow.com/questions/6499327/the-pythonic-way-to-generate-pairs
 
+# define parameters for the neural network - two random factors + diagnosis
 nn_parameter1 = factors[parameterStrings[parameter1]]
 nn_parameter2 = factors[parameterStrings[parameter2]]
 nn_parameter_output = factors['Diagnosis']
-#print(nn_parameter_output)
-#print(nn_parameter1)
-#print(nn_parameter2)
 
-# cut 399 elements (arbitrary) in the list; lessen data so MemoryError does not occur
-n = 399
-nn_parameter1_short = nn_parameter1[:-n or None]
+# remove elements from the parameters so that MemoryError does not occur
+# too many elements increase computation time significantly (especially with itertools.product)
+# arbitrarily cut 369 elements, leave 200
+n = 369
+nn_parameter1_short = nn_parameter1[:-n or None] # list splicing to get rid of all indices after n, or None if n = 0
 nn_parameter2_short = nn_parameter2[:-n or None]
 nn_parameter_output_short = nn_parameter_output[:-n or None]
 
-#print(len(nn_parameter1_short))
-#print(len(nn_parameter2_short))
+"""
+Approach:
+Use itertools to create ordered pairs from two separate lists
+e.g. a = [], b = [], itertools.product(a[i], b[j])
 
+Comments:
+-Create empty arrays to append each ordered itertools pair
+-Add a counter to break from the loop upon appending enough pairs, such that len(Y) = len(Y-hat) for the neural network
+"""
 input_nn = []
-# https://stackoverflow.com/questions/15715912/remove-the-last-n-elements-of-a-list
-
-import itertools
-
 i_j_count = 0
+
 for i, j in itertools.product(nn_parameter1_short, nn_parameter2_short):
-    input_nn.append([i, j])
+    input_nn.append([i, j]) # append ordered pair as a list, not a dictionary
     i_j_count += 1
-    if i_j_count == 170: # arbitrary, based upon the prior n cut of the data
+    if i_j_count == 200: # based upon the prior n cut of the data: i_j_count + n = len(parameter) = 569
         break
 
+# no need to use counter for output data, because it is pre-split
 output_of_data = []
 
 for i in nn_parameter_output_short:
     output_of_data.append([nn_parameter_output_short[i]])
 
-#output_of_data = np.array(factors['Diagnosis']) # always stays the same to assess impact of the factor
-
-#print(input_nn)
-#print(output_of_data)
-
+# make the arrays np.arrays (which are essentially matrix arrays)
+# this allows for matrix multiplication with dot products in the neural network
 input_nn = np.array(input_nn)
 output_of_data = np.array(output_of_data)
 
@@ -52,7 +56,6 @@ class neuralNetwork(object):
         self.outputSize = 1
         self.hiddenSize = 3
 
-        # np.random.randn: https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.random.randn.html
         # use random.randn to return a random value from the provided standard normal curve
 
         # define weights with respect to their input & hidden sizes
@@ -109,10 +112,10 @@ nn = neuralNetwork()
 # create loss array to ensure that the network is more accurate with each iteration
 lossArray = []
 
-for i in range(0, 2):
-    #print("input: \n" + str(input_nn))
-    #print("Predicted Front: \n" + str(nn.forwardProp(input_nn)))
-    #print("Actual: \n" + str(output_of_data))
+for i in range(0, 5): # arbitrarily run 5 iterations
+    #print("Input matrix: \n" + str(input_nn))
+    #print("Forward propagation: \n" + str(nn.forwardProp(input_nn)))
+    #print("Actual data: \n" + str(output_of_data))
 
     # mean sum squared loss is the algorithm we use to initiate gradient descent
     # MSE tells the derivative where to move on the curve
