@@ -1,0 +1,182 @@
+# CNN model for the structure of this code: https://victorzhou.com/blog/intro-to-cnns-part-1/
+
+# yield keyword: https://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do
+# np.shape: https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.shape.html
+# np.zeroes: https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html
+# np.shape needs (()) - https://stackoverflow.com/questions/5446522/data-type-not-understood
+# _ as a throwaway Pythonic variable: https://stackoverflow.com/questions/5893163/what-is-the-purpose-of-the-single-underscore-variable-in-python
+# np.flatten() - https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.flatten.html
+# np.argmax() - provides the index for the maximum values along an axis - https://docs.scipy.org/doc/numpy/reference/generated/numpy.argmax.html
+# enumerate() - https://docs.python.org/3/library/functions.html#enumerate
+# %s and %d - https://stackoverflow.com/questions/4288973/whats-the-difference-between-s-and-d-in-python-string-formatting/48660475
+
+import numpy as np
+import mnist
+
+class Conv3x3:
+    # a convolution layer using 3x3 filters
+
+    def __init__(self, num_filters):
+        self.num_filters = num_filters
+
+        # filters is a 3D array with dimensions (num_filters, 3, 3)
+        # we know two of the three dimensions' numerical values, divide by 9 to account for that
+        self.filters = np.random.randn(num_filters, 3, 3) / 9
+
+    def iterate_regions(self, image):
+        # generates all possible 3x3 image regions, similar to ij iteration in loops
+        # the image provided must be a 2D numpy array
+        h, w = image.shape # height and width
+
+        # index is h-2, w-2 because region is 3x3
+        # we want only a sliver at a time for the network to process
+        for i in range(h - 2):
+            for j in range(w - 2):
+                im_region = image[i: (i+3), j:(j+3)] # uses a Pythonic generator to create an iterator on the fly
+                yield im_region, i, j
+
+    def forwardProp(self, input):
+        # performs forward propagation of the convolutional layer, going through the network with ij iteration
+        # input is 2D np.array, output is 3D np.array with dimensions (h, w, num_filters)
+
+        h, w = input.shape
+
+        # returns a new 2D array of zeroes with parameters (h-2, w-2) and data type self.num_filters (int)
+        output = np.zeros((h-2, w-2, self.num_filters)) # 2D array, two parentheses
+
+        # take generator from self.iterate_regions
+        # number of regions * filters per region = np.sum for the convolutional neural network to compute
+        for im_region, i, j in self.iterate_regions(input):
+            # axis(1,2) produces a 1D array of length num_filters where each element has its respective conv result
+            output[i, j] = np.sum(im_region * self.filters, axis=(1,2))
+        return output
+
+"""
+train_images = mnist.train_images()
+train_labels = mnist.train_labels()
+
+conv_nn = Conv3x3(8)
+output = conv_nn.forwardProp(train_images[0])
+print(output.shape)
+"""
+
+# pool to reduce the amount of noise in the neural network; each pixel will have relatively similar information
+# to condense the information, relatively close pixels are pooled (averaged or max/min) to create a smaller output
+# pooling proportionately reduces h, w of the input by poolSize (h*w*l / poolSize)
+
+class MaxPoolSize2:
+    # max pooling layer using poolSize = 2
+
+    def iterate_regions(self, image):
+        # generates non-overlapping 2x2 image regions to pool (put together very similar regions for concision in data)
+        # image is a 2D numpy array
+        h, w, _ = image.shape # _ is just a placeholder variable
+        new_h = h // 2 # cannot have decimals, need integers for pooling
+        new_w = w // 2
+
+        # no need to subtract two from range(), we need to cover all possible pixels
+        for i in range(new_h):
+            for j in range(new_w):
+                # use another Pythonic generator for on-the-fly region examination
+                im_region = image[(i*2): (i*2 + 2), (j*2): (j*2 + 2)]
+                yield im_region, i, j
+
+    def forwardProp(self, input):
+        # goes through the max pool layer
+        # input is 3D np.array (h, w, num_filters), output is 3D np.array (new_h, new_w, num_filters)
+
+        h, w, num_filters = input.shape # use np.shape to instantiate rather than collect parameter length from
+        output = np.zeros((h // 2, w // 2, num_filters))
+
+        for im_region, i, j in self.iterate_regions(input):
+            # use the max, not the average, to pool
+            # axis = (0,1) to only iterate h, w and not num_filters
+            output[i, j] = np.amax(im_region, axis=(0,1))
+        return output
+
+"""
+train_images = mnist.train_images()
+train_labels = mnist.train_labels()
+
+conv_nn = Conv3x3(8)
+pool_nn = MaxPoolSize2()
+
+output = conv_nn.forwardProp(train_images[0])
+output = pool_nn.forwardProp(output)
+print(output.shape)
+"""
+
+# softmax is an equation which takes the pool_nn layers and further condenses the data
+# it quantifies how sure we are of the prediction, using a quantity called loss
+# L = -ln(p_c), where p_c is the predicted probability that the neural network provides
+# to minimize L, -ln(p_c) = 0, which is true when p_c = 1 (i.e. perfect certainty)
+
+class Softmax:
+    # create a fully connected layer with the softmax equation
+
+    def __init__(self, input_len, nodes):
+        # divide by input_len to reduce variance for the dimensions the network concretely knows
+        self.weights = np.random.randn(input_len, nodes) / input_len # create array with specific shape/values of nodes
+        self.biases = np.zeros(nodes) # only 1D np.array for biases
+
+    def forwardProp(self, input):
+        # goes through the softmax layer
+        # input is any array with any dimensions (generalized)
+        # output is 1D array with probability of the network's predictions
+        input = input.flatten()
+
+        # from the specific network weights, get information about the input_len and nodes that are generalized
+        input_len, nodes = self.weights.shape
+
+        totals = np.dot(input, self.weights) + self.biases # dot product + biases to shift
+        exp = np.exp(totals) # use e^x for softmax
+        divide_exp = exp / np.sum(exp, axis=0) # axis=0 indicates a horizontal movement through the array
+        return divide_exp
+
+# only use the first 1000 testing examples
+test_images = mnist.test_images()[:1000]
+test_labels = mnist.test_labels()[:1000]
+
+conv_nn = Conv3x3(8) # 28x28x1 -> 26x26x8, adding volume by num_filters
+pool_nn = MaxPoolSize2() # 26x26x8 -> 13x13x8, reducing size by pooling
+softmax = Softmax(13 * 13 * 8, 10) # 13x13x8 -> 10, end up with 10 elements
+
+def forward_cnn(image, label):
+    # complete forward propagation through the whole CNN
+    # calculates accuracy and cross-entropy loss
+    # image is a 2D np.array, label is a digit we want the final number of elements to be
+
+    # transform the image from [0, 255] (by 2^8 - 1) to [-0.5, 0.5] for convenience
+    output = conv_nn.forwardProp((image / 255) - 0.5) # add volume with num_filters
+    output = pool_nn.forwardProp(output) # reduce and pool
+    output = softmax.forwardProp(output) # use the softmax equation
+
+    # calculate cross-entropy loss and accuracy, use np.log() for ln(x)
+    loss = -1 * np.log(output[label]) # output[label] accesses the desired index from the 1D prediction np.array
+
+    if np.argmax(output) == label: # is the network's prediction genuinely true?
+        accuracy = 1
+    else:
+        accuracy = 0
+    return output, loss, accuracy
+
+print("CNN initialized")
+
+loss = 0
+num_correct = 0
+
+# enumerate() is a built-in Pythonic function that returns a tuple with the list index number and element
+for i, (im, label) in enumerate(zip(test_images, test_labels)):
+    _, l, accuracy = forward_cnn(im, label)
+    loss += l
+    num_correct += accuracy
+
+    # print every 100 steps
+    if i % 100 == 99:
+        # %s, %d are used to format strings when left as placeholder variables
+        print('[Step %d] Past 100 steps: Average loss %.3f | Accuracy: %d%%' % (i+1, loss / 100, num_correct))
+
+        # reset values every 100 steps
+        loss = 0
+        num_correct = 0
+        
