@@ -45,6 +45,8 @@ class Conv3x3:
         # performs forward propagation of the convolutional layer, going through the network with ij iteration
         # input is 2D np.array, output is 3D np.array with dimensions (h, w, num_filters)
 
+        self.last_input = input
+
         h, w = input.shape
 
         # returns a new 2D array of zeroes with parameters (h-2, w-2) and data type self.num_filters (int)
@@ -57,6 +59,20 @@ class Conv3x3:
             output[i, j] = np.sum(im_region * self.filters, axis=(1,2))
         return output
 
+    def backProp(self, dL_dOutput, learn_rate):
+        # dL/dOut is the loss gradient, learn_rate is a given float
+        dL_dFilters = np.zeros(self.filters.shape)
+
+        for im_region, i, j in self.iterate_regions(self.last_input):
+            for f in range(self.num_filters): # f = filters
+                dL_dFilters[f] += dL_dOutput[i, j, f] * im_region
+
+        # update filters by using stochastic gradient descent
+        self.filters -= learn_rate * dL_dFilters
+
+        # don't return any value because Conv3x3 is the first layer in the CNN
+        # otherwise return the loss gradient like any other CNN layer
+        return None
 """
 train_images = mnist.train_images()
 train_labels = mnist.train_labels()
@@ -91,6 +107,8 @@ class MaxPoolSize2:
         # goes through the max pool layer
         # input is 3D np.array (h, w, num_filters), output is 3D np.array (new_h, new_w, num_filters)
 
+        self.last_input = input
+
         h, w, num_filters = input.shape # use np.shape to instantiate rather than collect parameter length from
         output = np.zeros((h // 2, w // 2, num_filters))
 
@@ -99,6 +117,30 @@ class MaxPoolSize2:
             # axis = (0,1) to only iterate h, w and not num_filters
             output[i, j] = np.amax(im_region, axis=(0,1))
         return output
+
+    def backProp(self, dL_dOutputs):
+        # perform backpropagation for the maxpool layer
+        # return the loss gradient, i.e. how the network should adjust weights to reach 0 with gradient descent
+
+        dL_dInputs = np.zeros(self.last_input.shape)
+
+        for im_region, i, j in self.iterate_regions(self.last_input):
+            h, w, f = im_region.shape # height, weight, filter value
+            amax = np.amax(im_region, axis=(0,1)) # axis(0,1) returns the max from each axis
+
+            for i2 in range(h):
+                for j2 in range(w):
+                    for f2 in range(f):
+                        # if this pixel is the max value, assign the pixel to the gradient and return it
+                        # if the pixel is not the max, then assign 0 to the value in backpropagation
+                            # because it does not improve the weights in any way and we lose information
+                            # e.g. d/dx(x^2) = 2x, but int(2x)dx = x^2 + C, the + C represents the lost information
+                        if im_region[i2, j2, f2] == amax[f2]:
+                            # i1, j1, f1 represent the original pooling process in forward propagation
+                            # i2, j2, f2 scale the max values backwards and place them in the larger, noisier matrix
+                            dL_dInputs[i * 2 + i2, j * 2 + j2, f2] = dL_dOutputs[i, j, f2]
+
+        return dL_dInputs
 
 """
 train_images = mnist.train_images()
@@ -199,6 +241,8 @@ class Softmax:
             return dL_dInputs.reshape(self.last_input_shape)
 
 # only use the first 1000 testing examples
+train_images = mnist.train_images()[:1000]
+train_labels = mnist.train_labels()[:1000]
 test_images = mnist.test_images()[:1000]
 test_labels = mnist.test_labels()[:1000]
 
@@ -239,25 +283,50 @@ def train(im, label, learn_rate=0.005):
 
     # backwards
     gradient = softmax.backProp(gradient, learn_rate)
+    gradient = pool_nn.backProp(gradient)
+    gradient = conv_nn.backProp(gradient, learn_rate)
+
     return loss, accuracy
 
 print("CNN initialized")
 
+# train for 3 epochs
+for epoch in range(3):
+    print('Epoch %s' % epoch)
+
+    # shuffle the data
+    permutation = np.random.permutation(len(train_images))
+    train_images = train_images[permutation]
+    train_labels = train_labels[permutation]
+
+    # train
+    loss = 0
+    num_correct = 0
+
+    # enumerate() is a built-in Pythonic function that returns a tuple with the list index number and element
+    for i, (im, label) in enumerate(zip(test_images, test_labels)):
+
+        # print every 100 steps
+        if i % 100 == 99:
+            # %s, %d are used to format strings when left as placeholder variables
+            print('[Step %d] Past 100 steps: Average loss: %.3f | Accuracy: %d%%' % (i+1, loss / 100, num_correct))
+
+            # reset values every 100 steps
+            loss = 0
+            num_correct = 0
+
+        l, accuracy = train(im, label)
+        loss += l
+        num_correct += accuracy
+
+print('Testing CNN')
 loss = 0
 num_correct = 0
-
-# enumerate() is a built-in Pythonic function that returns a tuple with the list index number and element
-for i, (im, label) in enumerate(zip(test_images, test_labels)):
-
-    # print every 100 steps
-    if i % 100 == 99:
-        # %s, %d are used to format strings when left as placeholder variables
-        print('[Step %d] Past 100 steps: Average loss: %.3f | Accuracy: %d%%' % (i+1, loss / 100, num_correct))
-
-        # reset values every 100 steps
-        loss = 0
-        num_correct = 0
-
-    l, accuracy = train(im, label)
+for im, label in zip(test_images, test_labels):
+    _, l, accuracy = forward_cnn(im, label)
     loss += l
     num_correct += accuracy
+
+num_tests = len(test_images)
+print("Test loss: ", loss / num_tests, "%")
+print("Test accuracy: ", num_correct / num_tests, "%")
