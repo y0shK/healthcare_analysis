@@ -1,0 +1,122 @@
+# code model:
+# https://dev.to/shamdasani/build-a-flexible-neural-network-with-backpropagation-in-python
+
+import os
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
+dataDir = '/home/yash/research/hist/use/data'
+
+bool_array = []
+
+# use a cv2 library to read in arrays about pixel values for each png file and store it for the neural network input
+for img in os.listdir(dataDir):
+
+    # make image grayscale to reduce the numpy array to two dimensions (x, y)
+    img_array = cv2.imread(os.path.join(dataDir, img), cv2.IMREAD_GRAYSCALE)
+
+    img_size = 549
+    img_array = cv2.resize(img_array, (img_size, img_size))
+
+    # check whether the png file has a benign or malignant image, store it for the neural network output calculation
+    # this bool_array is the real quantity, the difference between it and the network's prediction (y-hat) is the error
+    if 'class0' in img:
+        bool_array.append(0)
+    elif 'class1' in img:
+        bool_array.append(1)
+
+    plt.imshow(img_array, cmap='gray')
+    #plt.show()
+
+class neuralNetwork(object):
+    def __init__(self):
+        # input size of 549 to match the dimensions of the png file provided
+        # output size of 1 to clearly denote a diagnosis, 0 for benign or 1 for malignant
+        # hidden size of 549 such that the dot products work
+        self.inputSize = 549
+        self.outputSize = 1
+        self.hiddenSize = 549
+
+        self.w1 = np.random.randn(self.inputSize, self.hiddenSize)
+        self.w2 = np.random.randn(self.hiddenSize, self.outputSize)
+
+    def forwardProp(self, X):
+        # X is the input, img_array, as defined by the pixel orientation per image (and as given by the array)
+        # i.e. the array of pixels as reported by cv2 is fed into the neural network, then used to compute a diagnosis
+
+        self.z1 = np.dot(X, self.w1) # input and first weights, 549x549 * 549x549 = 549x549
+        self.z2 = self.sigmoid(self.z1) # activation function [0, 1]
+        self.z3 = np.dot(self.z2, self.w2) # hidden layer and second weights, 549x549 * 549x1 = 549x1
+
+        output = self.sigmoid(self.z3) # final activation function to return [0, 1]
+        return output
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def sigmoidPrime(self, x):
+        return x * (1-x)
+
+    def backProp(self, X, Y, output):
+        # forwardProp's output yields an array of all 1 (due to the sigmoid compressing large pixel values)
+        # output is illogical to use as a classification until the weights are adjusted from random to meaningful
+        # once weights are adjusted by backProp, the network inputs pixels and outputs diagnoses (through hidden layers)
+
+        output = np.array(output) # mold output to matrix form so that matrix subtraction works
+        Y = np.array(Y)
+        self.outputError = Y - output # because both elements are matrices with equal dimensions, this operation works
+
+        # use gradient descent to find the error involved; initially tremendous, then smaller as the weights adjust
+        # this descent changes the algorithm from useless (because sigmoid(all pixel values) ~= +-1) to useful,
+        #   because pixel values become a useful input only as the network realizes how to classify them
+        # i.e. we teach the network to classify pixel values by modifying the weights and giving it iterative feedback
+
+        # 549x549 * 549x1
+        self.outputDelta = np.dot(np.array(self.outputError), np.array(self.sigmoidPrime(output)))
+        print(self.outputError.shape)
+        print(self.sigmoidPrime(output).shape)
+
+        # 549x1 * 1x549
+        self.z2_error = np.dot(self.outputDelta, self.w2.T)
+
+        print(self.outputDelta.shape)
+        print(self.w2.T.shape)
+
+        # 549x549 * 549x549
+        self.z2_delta = self.z2_error * self.sigmoidPrime(self.z2)
+
+        print(self.z2_error.shape)
+        print(self.sigmoidPrime(self.z2).shape)
+
+        print('shulk')
+        print(self.z2_delta.shape)
+
+        self.w1 += X.T.dot(self.z2_delta)  # input to hidden, 549x549 * 549x549 = 549x549
+        self.w2 += self.z2.T.dot(self.outputDelta)  # hidden to output, 549x549 * 549x549 = 549x549
+
+    def train(self, X, Y):
+        # continue the neural network feedback loop - calculate, analyze error, change weights, repeat
+        output = self.forwardProp(X)
+        self.backProp(X, Y, output)
+
+nn = neuralNetwork()
+
+# create loss array to ensure that the network is more accurate with each iteration
+lossArray = []
+
+# train the network
+# input = img_array
+# output = bool_array
+
+for i in range(0, 5): # arbitrarily run 5 iterations
+    # mean sum squared loss is the algorithm we use to initiate gradient descent
+    # MSE tells the derivative where to move on the curve
+    # gradient descent guides the movement to the local minimum by iterating MSE
+    loss = np.mean(bool_array - nn.forwardProp(img_array))
+    lossArray.append(loss)
+    print("Loss " + str(i + 1) + ": \n" + str(loss))
+
+    nn.train(img_array, bool_array)
+
+print("Loss array: \n" + str(lossArray))
