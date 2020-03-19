@@ -89,7 +89,6 @@ class neuralNetwork(object):
         print(self.z2_error.shape)
         print(self.sigmoidPrime(self.z2).shape)
 
-        print('shulk')
         print(self.z2_delta.shape)
 
         self.w1 += X.T.dot(self.z2_delta)  # input to hidden, 549x549 * 549x549 = 549x549
